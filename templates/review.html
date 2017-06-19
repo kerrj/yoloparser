@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<body>
+<title>Image Annotation Reviewer</title>
+<canvas id="myCanvas" width="1000" height="1000">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  function redraw(){
+    context.clearRect(0,0,canvas.width,canvas.height)
+    context.drawImage(img,0,0)
+    for(i=0;i<rects.length;i++){
+      r=rects[i]
+      context.lineWidth=2
+      context.strokeStyle='rgba(0,255,0,255)'
+      context.strokeRect(r.x,r.y,r.width,r.height)
+      n=names[i]
+      if(n!=undefined){
+        context.fillStyle='rgba(0,255,0,255)'
+        context.font='bold 25px Arial'
+        context.fillText(n,r.x+2,r.y+18)
+      }
+    }
+  }
+  var rects=[]
+  var names=[]
+  var canvas = document.getElementById('myCanvas');
+  var context = canvas.getContext('2d');
+  var img=new Image()
+  var interval
+  startInterval()
+  var i=0
+  loadAnnotation()
+  
+  function loadAnnotation(){
+    $.ajax({
+      type: "POST",
+      url: "/getannotation",
+      data: { index:i,success: function(result){
+          console.log(result)
+        } 
+      }
+    }); 
+  }
+  function startInterval(){
+    interval=setInterval(function(){
+    canvas.width=img.width+img.width/4
+    canvas.height=img.height+img.width/4
+    redraw()
+    },500)
+  }
+  function stopInterval(){
+    clearInterval(interval)
+  }
+</script>
+</canvas>
+</body>
+</html>
