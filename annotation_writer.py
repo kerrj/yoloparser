@@ -54,7 +54,7 @@ def save_annotation(imgname,bboxes,savedir,imgwidth,imgheight):
 
 def load_annotation(imgname):
     name=imgname.split('.')[0]
-    root=ET.parse('/users/justin/Documents/github/AnnotationApplication/annotationapp/annotationapp/static/annotations/'+name+'.xml')
+    root=ET.parse('./static/annotations/'+name+'.xml')
     bounding_boxes=[]
     for obj in root.findall('object'):
         name=obj.find('name').text
@@ -64,8 +64,7 @@ def load_annotation(imgname):
         xmax=int(float(bndbox.find('xmax').text))
         ymax=int(float(bndbox.find('ymax').text))
         bounding_boxes.append(BoundingBox(name,xmin,ymin,xmax,ymax))
-    print(bounding_boxes)
     return bounding_boxes
 
 if __name__=='__main__':
-    load_annotation('20170618_113023.jpg')
+    print(load_annotation('20170618_113023.jpg'))

@@ -9,17 +9,6 @@ app=Flask(__name__)
 def hi():
     return render_template('home.html')
 
-#@app.route('/review')
-#def review():
-    #return render_template('review.html')
-
-#@app.route('/getannotation',methods=['POST'])
-#def get_annotation():
-    #print(request.form)
-    #data=request.form
-    #index=data['index']
-    #return "lol"
-
 @app.route('/saveresults',methods=['POST'])
 def save():
     data=request.form
@@ -33,17 +22,17 @@ def save():
         ymax=data['boxes['+str(n)+'][ymax]']
         name=data['boxes['+str(n)+'][name]']
         bboxes.append(annotation_writer.BoundingBox(name,xmin,ymin,xmax,ymax))
-    annotation_writer.save_annotation(imgname,bboxes,'/users/justin/Documents/github/AnnotationApplication/annotationapp/annotationapp/static/annotations',data['width'],data['height'])
+    annotation_writer.save_annotation(imgname,bboxes,'./static/annotations',data['width'],data['height'])
     return 'complete'
 
 @app.route('/getimage',methods=['GET'])
 def load_image():
     annotations=[]
-    for root,dirs,files in os.walk('/users/justin/Documents/github/AnnotationApplication/annotationapp/annotationapp/static/annotations'):
+    for root,dirs,files in os.walk('./static/annotations'):
         annotations=files
     annotations.pop(0)
     
-    for root,dirs,images in os.walk('/users/justin/Documents/github/AnnotationApplication/annotationapp/annotationapp/static/images'):
+    for root,dirs,images in os.walk('./static/images'):
         images.pop(0)
         random.shuffle(images)
         for image in images:
