@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html>
 <body>
-<title>Image Annotator</title>
-<h3 style="margin-top:.1em;margin-bottom:.1em">Instructions</h3>
-<p style="margin-top:.1em;margin-bottom:.1em;font-size:.8em;">1. Click and drag to draw a bounding box, then press ENTER to confirm.</p>
-<p style="margin-top:.1em;margin-bottom:.1em;font-size:.8em;">2. Type in the name of the object, then press ENTER to confirm.</p>
-<p style="margin-top:.1em;margin-bottom:.1em;font-size:.8em;">3. Repeat for all objects in the scene.</p>
-<p style="margin-top:.1em;margin-bottom:.1em;font-size:.8em;">4. Press the "S" key to save the annotations.</p>
-<p style="margin-top:.1em;margin-bottom:.1em;font-size:.8em;">5. If needed, press ESCAPE to delete the most recent box</p>
+<title>Boxes Around Robots</title>
+<h1>Boxes Around Robots</h1>
+<p>Boxes around robots is a project collecting training data for detecting robots and common game elements in FTC games. Its goal is to amass thousands of 
+images with boxes drawn around game elements and robots for training object detectors. It is <a href="http://github.com/kerrj/yoloparser">open source at GitHub</a>
+, where all code for the website resides, as well as training images and formatted annotations.
+</p>
+<h2>Why do you need so much data?</h2>
+<p>Modern image processing techniques like neural networks require vast amount of training data to learn to accomplish a task. 
+Popular research data-bases like <a href="http://www.image-net.org/">ImageNet</a> have millions of images categorized into classes for this purpose.
+To use neural nets to detect FTC robots, we need thousands of images with robots marked in them. This website is a tool for crowdsourcing that task.
+Your help is much appreciated!
+</p>
+<h3 style="margin-bottom:.1em">Instructions</h3>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">1. Click and drag to draw a box as accurately as possible around an object, then press ENTER to confirm.</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">2. Type in the name of the object, then press ENTER to confirm.</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">3. Repeat for all objects in the scene.</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">4. Press the "S" key to save the annotations.</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">5. If needed, press ESCAPE to delete the most recent box</p>
 <p style="margin-top:.1em;margin-bottom:.1em;font-size:1.1em;">Objects to mark: "ball","robot"</p>
 
-<canvas id="myCanvas" width="1000" height="1000">
+<canvas id="myCanvas" width="100" height="100">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
       class Rect{
@@ -174,7 +185,7 @@
             return
           }
           typing=true
-          name="ball"
+          name=""
           rects.push(rect)
           rect=undefined
           redraw()
