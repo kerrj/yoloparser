@@ -131,7 +131,7 @@ Your help is much appreciated!
         ymin=Math.max(0,ymin)
         return new Rect(xmin,ymin,xmax-xmin,ymax-ymin)
       }
-      function loadImage(name){
+      function loadImage(){
         $.ajax({ url: "/getimage", success: function(content) {
             names=[]
             rects=[]
