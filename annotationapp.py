@@ -30,9 +30,11 @@ def load_image():
     annotations=[]
     for root,dirs,files in os.walk('./static/annotations'):
         annotations=files
+    print(annotations)
     annotations.pop(0)
     
     for root,dirs,images in os.walk('./static/images'):
+        print(images)
         images.pop(0)
         random.shuffle(images)
         for image in images:
