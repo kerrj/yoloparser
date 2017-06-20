@@ -133,6 +133,7 @@ Your help is much appreciated!
       }
       function loadImage(){
         $.ajax({ url: "/getimage", success: function(content) {
+            console.log(content)
             names=[]
             rects=[]
             typing=false
