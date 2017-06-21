@@ -197,6 +197,9 @@ Your help is much appreciated!
       document.getElementById("robot").onclick=robot
       document.getElementById("yogaball").onclick=yogaball
       document.getElementById("save").onclick=function(){
+        if(rects.length==0){
+          return
+        }
         bboxes=[]
         for(i=0;i<names.length;i++){
           r=rects[i]
