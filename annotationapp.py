@@ -2,6 +2,7 @@ from flask import Flask,render_template,request
 import annotation_writer
 import os
 import random
+import json
 app=Flask(__name__)
 
 
@@ -32,16 +33,25 @@ def save():
 @app.route('/getnumannotations')
 def get_num_annotations():
     for root,dirs,annotations in os.walk('./static/annotations'):
-        return len(annotations)
+        return str(len(annotations))
     
 @app.route('/getannotation',methods=['POST'])
 def get_annotation():
     data=request.form
-    print(data)
     index=int(data['index'])
     for root,dirs,annotations in os.walk('./static/annotations'):
+        annotations.pop(0)
         annotation=annotations[index]
-    
+    image=annotation.split('.')[0]+'.jpg'
+    bboxes=annotation_writer.load_annotation(annotation)
+    boxesjson=''
+    for box in bboxes:
+        boxesjson+=box.to_json()+','
+    if boxesjson[-1]==',':
+        boxesjson=boxesjson[:-1]
+    boxesjson='['+boxesjson+']'
+    output=json.dumps({'annotation':annotation,'image':image,'bboxes':boxesjson})
+    return output
     
 @app.route('/getimage',methods=['GET'])
 def load_image():
