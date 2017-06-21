@@ -56,7 +56,6 @@
             rects=rects.concat(new Rect(xmin,ymin,xmax-xmin,ymax-ymin))
             names=names.concat(bboxes[j]['name'])
           }
-          k++
         },
       data: { index:k},
       dataType:"json"
@@ -72,6 +71,16 @@
   function stopInterval(){
     clearInterval(interval)
   }
+  document.addEventListener('keydown',function(evt){
+        if(evt.code=="ArrowRight"){
+          k++
+          loadAnnotation()
+        }
+        if(evt.code=="ArrowLeft"){
+          k--
+          loadAnnotation()
+        }
+      },false)
 </script>
 </canvas>
 </body>

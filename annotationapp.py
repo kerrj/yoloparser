@@ -40,7 +40,6 @@ def get_annotation():
     data=request.form
     index=int(data['index'])
     for root,dirs,annotations in os.walk('./static/annotations'):
-        annotations.pop(0)
         annotation=annotations[index]
     image=annotation.split('.')[0]+'.jpg'
     bboxes=annotation_writer.load_annotation(annotation)
