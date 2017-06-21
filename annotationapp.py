@@ -6,8 +6,12 @@ app=Flask(__name__)
 
 
 @app.route('/')
-def hi():
+def home():
     return render_template('home.html')
+
+@app.route('/review')
+def review():
+    return render_template('review.html')
 
 @app.route('/saveresults',methods=['POST'])
 def save():
@@ -25,6 +29,20 @@ def save():
     annotation_writer.save_annotation(imgname,bboxes,'./static/annotations',data['width'],data['height'])
     return 'complete'
 
+@app.route('/getnumannotations')
+def get_num_annotations():
+    for root,dirs,annotations in os.walk('./static/annotations'):
+        return len(annotations)
+    
+@app.route('/getannotation',methods=['POST'])
+def get_annotation():
+    data=request.form
+    print(data)
+    index=int(data['index'])
+    for root,dirs,annotations in os.walk('./static/annotations'):
+        annotation=annotations[index]
+    
+    
 @app.route('/getimage',methods=['GET'])
 def load_image():
     annotations=[]
@@ -37,4 +55,4 @@ def load_image():
             name=image.split('.')[0]
             if annotations.count(name+'.xml')==0:
                 return image
-    return ''   
+    return ''
