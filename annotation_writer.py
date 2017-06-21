@@ -9,6 +9,8 @@ class BoundingBox():
         self.ymin=ymin
         self.ymax=ymax
         self.xmax=xmax
+    def to_json(self):
+        return '{"name":"'+self.name+'","xmin":'+str(self.xmin)+',"xmax":'+str(self.xmax)+',"ymin":'+str(self.ymin)+',"ymax":'+str(self.ymax)+"}"
 
 
 def save_annotation(imgname,bboxes,savedir,imgwidth,imgheight):

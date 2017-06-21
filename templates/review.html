@@ -5,6 +5,14 @@
 <canvas id="myCanvas" width="1000" height="1000">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
+  class Rect{
+    constructor(x,y,width,height){
+      this.x=x
+      this.y=y
+      this.width=width
+      this.height=height
+    }
+  }
   function redraw(){
     context.clearRect(0,0,canvas.width,canvas.height)
     context.drawImage(img,0,0)
@@ -28,17 +36,30 @@
   var img=new Image()
   var interval
   startInterval()
-  var i=0
+  var k=0
   loadAnnotation()
   
   function loadAnnotation(){
     $.ajax({
       type: "POST",
       url: "/getannotation",
-      data: { index:i,success: function(result){
-          console.log(result)
-        } 
-      }
+      success:function(result){
+          rects=[]
+          names=[]
+          img.src='/static/images/'+result['image']
+          bboxes=JSON.parse(result['bboxes'])
+          for(j=0;j<bboxes.length;j++){
+            xmin=bboxes[j]['xmin']
+            xmax=bboxes[j]['xmax']
+            ymax=bboxes[j]['ymax']
+            ymin=bboxes[j]['ymin']
+            rects=rects.concat(new Rect(xmin,ymin,xmax-xmin,ymax-ymin))
+            names=names.concat(bboxes[j]['name'])
+          }
+          k++
+        },
+      data: { index:k},
+      dataType:"json"
     }); 
   }
   function startInterval(){
