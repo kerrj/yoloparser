@@ -1,2 +1,6 @@
-# yoloparser
-Code for running a Flask app which iterates through images in the static/iamges directory and prompts the user to mark objects, saving Pascal VOC-style xml annotations for each image in the static/annotations directory.
+# Boxes Around Robots
+This is the source code behind http://boxesaroundrobots.com, including all training images and processed annotations.
+# Goals
+The long-term goal of this project is to give FTC teams a relatively streamlined interface to use neural networks for object detection during competitions. Broken down, this means my intention is to enable teams to:
+* Transplant a pre-trained network into their robots which already detects game elements like robots and balls
+* Create their own training data and train a custom neural net object detector
