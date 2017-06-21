@@ -2,7 +2,11 @@
 <html>
 <body>
 <title>Image Annotation Reviewer</title>
-<canvas id="myCanvas" width="1000" height="1000">
+<p>
+<button id="previousButton">Previous</button>
+<button id="nextButton">Next</button>
+</p>
+<canvas id="myCanvas" width="100" height="100">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
   class Rect{
@@ -14,6 +18,8 @@
     }
   }
   function redraw(){
+    canvas.width=img.width
+    canvas.height=img.height
     context.clearRect(0,0,canvas.width,canvas.height)
     context.drawImage(img,0,0)
     for(i=0;i<rects.length;i++){
@@ -32,11 +38,13 @@
   var rects=[]
   var names=[]
   var canvas = document.getElementById('myCanvas');
+  var nextButton=document.getElementById('nextButton');
+  var previousButton=document.getElementById('previousButton');
   var context = canvas.getContext('2d');
   var img=new Image()
   var interval
   startInterval()
-  var k=0
+  var k=1
   loadAnnotation()
   
   function loadAnnotation(){
@@ -81,6 +89,8 @@
           loadAnnotation()
         }
       },false)
+  previousButton.onclick=function(){k--;loadAnnotation()}
+  nextButton.onclick=function(){k++;loadAnnotation()}
 </script>
 </canvas>
 </body>
