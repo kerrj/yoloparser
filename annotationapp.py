@@ -35,6 +35,14 @@ def get_num_annotations():
     for root,dirs,annotations in os.walk('./static/annotations'):
         return str(len(annotations))
     
+@app.route('/remaining')
+def get_remaining():
+    for root,dirs,annotations in os.walk('./static/annotations'):
+        num_a=len(annotations)
+    for root,dirs,images in os.walk('./static/images'):
+        num_i=len(images)   
+    return str(num_i-num_a)
+
 @app.route('/getannotation',methods=['POST'])
 def get_annotation():
     data=request.form
