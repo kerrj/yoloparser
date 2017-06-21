@@ -17,11 +17,37 @@
       this.height=height
     }
   }
+  class BoundingBox{
+        constructor(name,xmin,ymin,xmax,ymax){
+          this.name=name
+          this.xmin=xmin
+          this.ymin=ymin
+          this.ymax=ymax
+          this.xmax=xmax
+        }
+      }
   function redraw(){
     canvas.width=img.width
     canvas.height=img.height
     context.clearRect(0,0,canvas.width,canvas.height)
     context.drawImage(img,0,0)
+    context.lineWidth=4
+    context.strokeStyle='rgba(255,0,0,255)'
+    //draw x
+    context.beginPath();
+    context.moveTo(Math.min(img.width,mousex),0);
+    context.lineTo(Math.min(img.width,mousex),img.height);
+    context.stroke();
+    //draw y
+    context.beginPath();
+    context.moveTo(0,Math.min(img.height,mousey));
+    context.lineTo(img.width,Math.min(img.height,mousey));
+    context.stroke();
+    if(rect!=undefined){
+          context.lineWidth=4
+          context.strokeStyle='rgba(255,255,0,255)'
+          context.strokeRect(rect.x,rect.y,rect.width,rect.height)
+        }
     for(i=0;i<rects.length;i++){
       r=rects[i]
       context.lineWidth=2
@@ -34,7 +60,16 @@
         context.fillText(n,r.x+2,r.y+18)
       }
     }
+    if(name!=""){
+      r=rects[rects.length-1]
+      context.fillStyle='rgba(255,255,0,255)'
+      context.font='bold 25px Arial'
+      context.fillText(name,r.x+2,r.y+18)
+    }
   }
+  var press,rect,mousedown
+  var name=""
+  var iname=""
   var rects=[]
   var names=[]
   var canvas = document.getElementById('myCanvas');
@@ -43,17 +78,39 @@
   var context = canvas.getContext('2d');
   var img=new Image()
   var interval
+  var typing=false;
   startInterval()
   var k=1
   loadAnnotation()
-  
+  function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };
+  }
+  function getRect(point1,point2){
+    var xmin=Math.min(point1.x,point2.x)
+    var xmax=Math.max(point1.x,point2.x)
+    var ymin=Math.min(point1.y,point2.y)
+    var ymax=Math.max(point1.y,point2.y)
+    ymax=Math.min(ymax,img.height)
+    xmax=Math.min(xmax,img.width)
+    xmin=Math.max(0,xmin)
+    ymin=Math.max(0,ymin)
+    return new Rect(xmin,ymin,xmax-xmin,ymax-ymin)
+  }
   function loadAnnotation(){
     $.ajax({
       type: "POST",
       url: "/getannotation",
       success:function(result){
           rects=[]
+          typing=false;
+          name=""
+          rect=undefined
           names=[]
+          iname=result['image']
           img.src='/static/images/'+result['image']
           bboxes=JSON.parse(result['bboxes'])
           for(j=0;j<bboxes.length;j++){
@@ -80,6 +137,75 @@
     clearInterval(interval)
   }
   document.addEventListener('keydown',function(evt){
+        if(typing){
+          if(evt.code=="Backspace"){
+            name=name.slice(0,name["length"]-1)
+            redraw()
+            return
+          }
+          if(evt.code=="Enter"){
+            names.push(name)
+            name=""
+            redraw()
+            typing=false
+            return
+          }
+          if(evt.code=="Escape"){
+            name=""
+            typing=false
+            if(names.length==rects.length){
+              names.pop()
+              rects.pop() 
+            }else{
+              rects.pop()
+            }
+            redraw()
+            return
+          }
+          name=name+evt.key
+          redraw()
+          return
+        }
+        if(evt.code=="Enter"){
+          if(rect==undefined){
+            return
+          }
+          typing=true
+          name=""
+          rects.push(rect)
+          rect=undefined
+          redraw()
+          return
+        }
+        if(evt.code=="KeyS"){
+          bboxes=[]
+          for(i=0;i<names.length;i++){
+            r=rects[i]
+            n=names[i]
+            bboxes.push(new BoundingBox(n,r.x,r.y,r.x+r.width,r.y+r.height))
+          }
+          $.ajax({
+            type: "POST",
+            url: "/saveresults",
+            data: { boxes: bboxes,length:bboxes.length,imgname:iname,width:img.width,height:img.height,success: function(result){
+                k++;
+                loadAnnotation();
+              } 
+            }
+           }); 
+          return
+        }
+        if(evt.code=="Escape"){
+          if(names.length==rects.length){
+            names.pop()
+            rects.pop() 
+          }else{
+            rects.pop()
+          }
+          rect=undefined
+          redraw()
+          return
+        }
         if(evt.code=="ArrowRight"){
           k++
           loadAnnotation()
@@ -89,6 +215,25 @@
           loadAnnotation()
         }
       },false)
+      canvas.onmousemove=function(evt) {
+        mousePos = getMousePos(canvas, evt);
+        mousex=mousePos.x
+        mousey=mousePos.y
+        if(mousedown){
+          rect=getRect(press,mousePos)
+          redraw()
+          return
+        }
+        redraw()
+      }
+      
+      canvas.onmousedown=function(evt){
+        press=getMousePos(canvas,evt)
+        mousedown=true
+      }
+      canvas.onmouseup=function(evt){
+        mousedown=false
+      }
   previousButton.onclick=function(){k--;loadAnnotation()}
   nextButton.onclick=function(){k++;loadAnnotation()}
 </script>
