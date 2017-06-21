@@ -12,6 +12,7 @@ FTC has been forging forward recently, giving teams access to more powerful proc
 * Background on YOLO (neural net object detector)
 * Using a pretrained neural net in an Android app
 * Training your own neural net
+* Resources
 
 # Using Neural Nets for Object Detection
 ![](/samples/demo1.jpg?raw=true)
