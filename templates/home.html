@@ -14,13 +14,19 @@ To use neural nets to detect FTC robots, we need thousands of images with robots
 Your help is much appreciated!
 </p>
 <h3 style="margin-bottom:.1em">Instructions</h3>
-<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">1. Click and drag to draw a box as accurately as possible around an object, then press ENTER to confirm.</p>
-<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">2. Type in the name of the object, then press ENTER to confirm.</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">1. Click and drag to draw a box as accurately as possible around an object</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">2. Click the button corresponding with the object name, or use the given hotkey.</p>
 <p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">3. Repeat for all objects in the scene.</p>
-<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">4. Press the "S" key to save the annotations.</p>
-<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">5. If needed, press ESCAPE to delete the most recent box</p>
-<p style="margin-top:.1em;margin-bottom:.1em;font-size:1.1em;font-weight:bold;">Objects to mark: "ball"(only RED AND BLUE wiffle balls),"yogaball","robot"</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">4. Click save to save your annotations</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">5. If needed, click "UNDO" to delete the most recent box</p>
+<p style="margin-top:.1em;margin-bottom:.1em;">
+<button id="ball" style="width:100px;height:40px;margin-top:.1em;margin-bottom:.1em;">(1) RED/BLUE WIFFLE BALL</button>
+<button id="yogaball" style="width:100px;height:40px;margin-top:.1em;margin-bottom:.1em;">(2) RED/BLUE YOGABALL</button>
+<button id="robot" style="width:100px;height:40px;margin-top:.1em;margin-bottom:.1em;">(3) ROBOT</button>
+<button id="undo" style="width:100px;height:40px;margin-top:.1em;margin-bottom:.1em;">UNDO</button>
+<button id="save" style="width:100px;height:40px;margin-top:.1em;margin-bottom:.1em;">SAVE</button>
 
+</p>
 <canvas id="myCanvas" width="100" height="100">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
@@ -151,77 +157,71 @@ Your help is much appreciated!
         });
       }
       document.addEventListener('keydown',function(evt){
-        if(typing){
-          if(evt.code=="Backspace"){
-            name=name.slice(0,name["length"]-1)
-            redraw()
-            return
-          }
-          if(evt.code=="Enter"){
-            names.push(name)
-            name=""
-            redraw()
-            typing=false
-            return
-          }
-          if(evt.code=="Escape"){
-            name=""
-            typing=false
-            if(names.length==rects.length){
-              names.pop()
-              rects.pop() 
-            }else{
-              rects.pop()
-            }
-            redraw()
-            return
-          }
-          name=name+evt.key
-          redraw()
-          return
+        if(evt.code=="Digit1"){
+          ball()
+        }else if(evt.code=="Digit2"){
+          yogaball()
+        }else if(evt.code=="Digit3"){
+          robot()
         }
-        if(evt.code=="Enter"){
-          if(rect==undefined){
-            return
-          }
-          typing=true
-          name=""
-          rects.push(rect)
-          rect=undefined
-          redraw()
-          return
-        }
-        if(evt.code=="KeyS"){
-          bboxes=[]
-          for(i=0;i<names.length;i++){
-            r=rects[i]
-            n=names[i]
-            bboxes.push(new BoundingBox(n,r.x,r.y,r.x+r.width,r.y+r.height))
-          }
-          $.ajax({
-            type: "POST",
-            url: "/saveresults",
-            data: { boxes: bboxes,length:bboxes.length,imgname:iname,width:img.width,height:img.height,success: function(result){
-                loadImage()
-              } 
-            }
-           }); 
-          return
-        }
-        if(evt.code=="Escape"){
-          if(names.length==rects.length){
-            names.pop()
-            rects.pop() 
-          }else{
-            rects.pop()
-          }
-          rect=undefined
-          redraw()
-          return
-        }
-        
       },false)
       
+      ball=function(){
+        if(rect==undefined){
+          return
+        }
+        rects.push(rect)
+        rect=undefined
+        names.push("ball")
+        redraw()
+      }
+      yogaball=function(){
+        if(rect==undefined){
+          return
+        }
+        rects.push(rect)
+        rect=undefined
+        names.push("yogaball")
+        redraw()
+      }
+      robot=function(){
+       if(rect==undefined){
+          return
+        }
+        rects.push(rect)
+        rect=undefined
+        names.push("robot")
+        redraw()
+      }
+      document.getElementById("ball").onclick=ball
+      document.getElementById("robot").onclick=robot
+      document.getElementById("yogaball").onclick=yogaball
+      document.getElementById("save").onclick=function(){
+        bboxes=[]
+        for(i=0;i<names.length;i++){
+          r=rects[i]
+          n=names[i]
+          bboxes.push(new BoundingBox(n,r.x,r.y,r.x+r.width,r.y+r.height))
+        }
+        $.ajax({
+          type: "POST",
+          url: "/saveresults",
+          data: { boxes: bboxes,length:bboxes.length,imgname:iname,width:img.width,height:img.height,success: function(result){
+              loadImage();
+            } 
+          }
+         }); 
+      }
+      document.getElementById("undo").onclick=function(){
+       if(names.length==rects.length){
+          names.pop()
+          rects.pop() 
+        }else{
+          rects.pop()
+        }
+        rect=undefined
+        redraw()
+      }
       canvas.onmousemove=function(evt) {
         mousePos = getMousePos(canvas, evt);
         mousex=mousePos.x
