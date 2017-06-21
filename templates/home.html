@@ -2,24 +2,28 @@
 <html>
 <body>
 <title>Boxes Around Robots</title>
-<h1>Boxes Around Robots</h1>
+<h2>Boxes Around Robots</h2>
 <p>Boxes around robots is a project collecting training data for detecting robots and common game elements in FTC games. Its goal is to amass thousands of 
 images with boxes drawn around game elements and robots for training object detectors. It is <a href="http://github.com/kerrj/yoloparser">open source at GitHub</a>
 , where all code for the website resides, as well as training images and formatted annotations.
 </p>
-<h2>What is this data used for?</h2>
+<h3>What is this data used for?</h3>
 <p>Modern image processing techniques like neural networks require vast amount of training data to learn to accomplish a task. 
 Popular research data-bases like <a href="http://www.image-net.org/">ImageNet</a> have millions of images categorized into classes for this purpose.
 To use neural nets to detect FTC robots, we need thousands of images with robots marked in them. I've combed Youtube videos and photos for pictures of robots, but
 now they need to be marked with robots' locations. This website is a tool for crowdsourcing that task.
-Your help is much appreciated!
+Your help is much appreciated! 
+</p>
+<h3> How can I/my team use this as a tool during competition?</h3>
+<p>
+For more information visit <a href="http://github.com/kerrj/yoloparser">the GitHub page.</a>
 </p>
 <h3 style="margin-bottom:.1em">Instructions</h3>
 <p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">1. Click and drag to draw a box as accurately as possible around an object</p>
 <p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">2. Click the button corresponding with the object name, or use the given hotkey.</p>
 <p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">3. Repeat for all objects in the scene.</p>
-<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">4. Click save to save your annotations</p>
-<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">5. If needed, click "UNDO" to delete the most recent box</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">4. Click "SAVE" to save your annotations, or use the hotkey</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">5. If needed, click "UNDO" to delete the most recent box,or use the hotkey</p>
 
 <p style="margin-top:.1em;margin-bottom:.1em;">
 <button id="ball" style="width:100px;height:40px;margin-top:.1em;margin-bottom:.1em;">(1) RED/BLUE WIFFLE BALL</button>
@@ -27,7 +31,6 @@ Your help is much appreciated!
 <button id="robot" style="width:100px;height:40px;margin-top:.1em;margin-bottom:.1em;">(3) ROBOT</button>
 <button id="undo" style="width:100px;height:40px;margin-top:.1em;margin-bottom:.1em;">(U) UNDO</button>
 <button id="save" style="width:100px;height:40px;margin-top:.1em;margin-bottom:.1em;">(S) SAVE</button>
-
 </p>
 <canvas id="myCanvas" width="100" height="100">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
