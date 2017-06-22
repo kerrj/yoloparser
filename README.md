@@ -1,11 +1,18 @@
 # Boxes Around Robots
 This is the source code behind http://boxesaroundrobots.com, including all training images and processed annotations. It is also the name of a personal project to educate FTC teams in how to use neural nets for image processing.
+
+### Webpage endpoints
+* /: Main page for marking images
+* /review: page for scrolling through annotated images and viewing their bounding boxes
+* /getnumannotations: returns the number of annotated images
+* /remaining: returns the number of images left to be annotated
+
 # Goals
 The long-term goal of this project is to give FTC teams a relatively streamlined interface to use neural networks for object detection during competitions. Broken down, this means my intention is to enable teams to:
 * Transplant a pre-trained network into their robots which already detects game elements like robots and balls
 * Create their own training data and train a custom neural net object detector
 
-FTC has been forging forward recently, giving teams access to more powerful processors, sensors, and most importantly a camera. I hope this project can keep expanding the tools in teams' toolboxes, as well as teach about an exciting recent development in computer science.
+FTC has been forging forward recently, giving teams access to more powerful processors, sensors, and most importantly a camera. FTC has always tried to educate students about robotics, so I hope this project can not only expand the tools in teams' toolboxes, but also teach about an exciting recent development in computer science.
 
 ### Contents
 * Background on neural nets
@@ -34,7 +41,7 @@ If you'd like to *really* learn about neural networks, I've included several vid
 Neural nets have been around since the later 1900's, but have only very recently (we're talking since 2012) taken off, largely due to the increased availability of training information, and faster processors. They have become very successful at classifying images, translation, object detection, and much more. We will only focus on object detection here. The neural net we will use here is called "You Only Look Once" (yes YOLO). The link to the original paper as well as more resources are included at the bottom of this document. We won't spend much time on the architecture of this net, but it is important to understand a few things about it:
 * **Size:** The version of YOLO we are using has roughly 45 million trainable parameters, and about 10 layers of neurons
 * **I/O:** The input to the network is a 416x416 RGB image, and the output is a set of bounding box predictions
-* **Training:** Training this network requires images with ground truth bounding boxes drawn, hence http://boundingboxesaroundrobots.com
+* **Training:** Training this network requires images with ground truth bounding boxes drawn, hence http://boxesaroundrobots.com
 
 # Using a pretrained neural net in your Android app
 (section under construction)
