@@ -30,6 +30,13 @@ def save():
     annotation_writer.save_annotation(imgname,bboxes,'./static/annotations',data['width'],data['height'])
     return 'complete'
 
+@app.route('/oops',methods=['POST'])
+def oops():
+    data=request.form
+    image=data['image']
+    os.remove('./static/annotations/'+image.split('.')[0]+'.xml')
+    return 'success'
+
 @app.route('/getnumannotations')
 def get_num_annotations():
     for root,dirs,annotations in os.walk('./static/annotations'):
