@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 <annotation><filename>ScreenShot20170620at84923PM.jpg</filename><size><width>474</width><height>473</height><depth>3</depth></size><object><name>robot</name><bndbox><xmin>167</xmin><ymin>290.796875</ymin><xmax>247</xmax><ymax>370.796875</ymax></bndbox></object><object><name>robot</name><bndbox><xmin>412</xmin><ymin>301.796875</ymin><xmax>474</xmax><ymax>390.796875</ymax></bndbox></object></annotation>
+=======
+<annotation><filename>ScreenShot20170620at84923PM.jpg</filename><size><width>474</width><height>473</height><depth>3</depth></size><object><name>robot</name><bndbox><xmin>262.0028409957886</xmin><ymin>29.943206787109375</ymin><xmax>436.0028409957886</xmax><ymax>213.94320678710938</ymax></bndbox></object><object><name>robot</name><bndbox><xmin>1.0028409957885742</xmin><ymin>252.94320678710938</ymin><xmax>156.00284099578857</xmax><ymax>403.9432067871094</ymax></bndbox></object></annotation>
+>>>>>>> 8a5f5c5e434a56ac3eb7545fe2086f7ed26cd437
