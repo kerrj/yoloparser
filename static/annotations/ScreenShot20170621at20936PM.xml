@@ -1,1 +1,1 @@
-<annotation><filename>ScreenShot20170621at20936PM.jpg</filename><size><width>474</width><height>473</height><depth>3</depth></size><object><name>robot</name><bndbox><xmin>44</xmin><ymin>133.3625030517578</ymin><xmax>357</xmax><ymax>377.3625030517578</ymax></bndbox></object></annotation>
+<annotation><filename>ScreenShot20170621at20936PM.jpg</filename><size><width>474</width><height>473</height><depth>3</depth></size><object><name>robot</name><bndbox><xmin>41</xmin><ymin>89</ymin><xmax>357</xmax><ymax>380</ymax></bndbox></object></annotation>
