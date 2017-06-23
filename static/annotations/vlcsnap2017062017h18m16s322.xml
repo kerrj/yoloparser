@@ -1,0 +1,1 @@
+<annotation><filename>vlcsnap2017062017h18m16s322.jpg</filename><size><width>576</width><height>576</height><depth>3</depth></size><object><name>robot</name><bndbox><xmin>195</xmin><ymin>167</ymin><xmax>411</xmax><ymax>410</ymax></bndbox></object><object><name>ball</name><bndbox><xmin>464</xmin><ymin>453</ymin><xmax>519</xmax><ymax>492</ymax></bndbox></object></annotation>
