@@ -1,0 +1,1 @@
+<annotation><filename>2013_Robot_Large.jpg</filename><size><width>400</width><height>400</height><depth>3</depth></size><object><name>robot</name><bndbox><xmin>46.013888359069824</xmin><ymin>1.67010498046875</ymin><xmax>398.0138883590698</xmax><ymax>399.67010498046875</ymax></bndbox></object></annotation>

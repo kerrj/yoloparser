@@ -1,0 +1,1 @@
+<annotation><filename>robot3.jpg</filename><size><width>701</width><height>701</height><depth>3</depth></size><object><name>robot</name><bndbox><xmin>2.01171875</xmin><ymin>63.06640625</ymin><xmax>700.01171875</xmax><ymax>688.06640625</ymax></bndbox></object></annotation>
