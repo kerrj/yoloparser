@@ -1,0 +1,1 @@
+<annotation><filename>vid400751.jpg</filename><size><width>482</width><height>482</height><depth>3</depth></size><object><name>ball</name><bndbox><xmin>190</xmin><ymin>183.5625</ymin><xmax>346</xmax><ymax>349.5625</ymax></bndbox></object><object><name>ball</name><bndbox><xmin>140</xmin><ymin>71.5625</ymin><xmax>246</xmax><ymax>179.5625</ymax></bndbox></object></annotation>
