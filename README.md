@@ -64,3 +64,18 @@ Neural nets have been around since the later 1900's, but have only very recently
 
 # Using a pretrained neural net in your Android app
 (section under construction)
+
+# Resources
+
+### Websites
+* <a href=https://github.com/thtrieu/darkflow>Darkflow GitHub, open-source method of training custom YOLO models</a>
+* <a href=https://pjreddie.com/darknet/yolo/>YOLO website (includes research paper)</a>
+* <a href=https://tensorflow.org>Tensorflow website</a>
+
+### Videos
+* <a href="https://www.ted.com/talks/fei_fei_li_how_we_re_teaching_computers_to_understand_pictures">TED talk in layman's terms on neural nets for image processing</a>
+* <a href="https://www.youtube.com/watch?v=uXt8qF2Zzfo">Lecture on mathematics of neural nets, also watch 12.b</a>
+* <a href="https://www.youtube.com/watch?v=u6aEYuemt0M">Talk on specifics of neural nets for image processing</a>
+* <a href="https://www.youtube.com/watch?v=1L0TKZQcUtA">Survey of neural nets for learning, not specifically targeted for image processing</a>
+* <a href="https://www.youtube.com/watch?v=AgkfIQ4IGaM">Fascinating demonstration "under the hood" of neural nets</a>
+* <a href="https://www.youtube.com/watch?v=NM6lrxy0bxs">Presentation about YOLO</a>
