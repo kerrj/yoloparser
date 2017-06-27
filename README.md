@@ -63,7 +63,21 @@ Neural nets have been around since the later 1900's, but have only very recently
 * **Training:** Training this network requires images with ground truth bounding boxes drawn, hence http://boxesaroundrobots.com
 
 # Using a pretrained neural net in your Android app
-(section under construction)
+**NOTE**:*This section and the example app currently use TensorflowInferenceInterface for exectuting the neural net. When Tensorflow Lite is released that will become obsolete, and this section will be updated.*
+
+Using a pretrained YOLO network in your application is actually quite easy: see <a href="http://github.com/kerrj/yoloexampleapp">my full example app here.</a> The first step is adding the following lines to your build.gradle file
+
+```
+//add these to the base of build.gradle
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+//add this to the dependencies of build.gradle
+compile 'org.tensorflow:tensorflow-android:+'
+```
 
 # Resources
 
