@@ -2,10 +2,10 @@
 This is the source code behind http://boxesaroundrobots.com, including all training images and processed annotations. It is also the name of a personal project to educate FTC teams in how to use neural nets for image processing.
 
 ### Webpage endpoints
-* <a href="boxesaroundrobots.com">/: Main page for marking images</a>
-* <a href="boxesaroundrobots.com/review">/review: page for scrolling through annotated images and viewing their bounding boxes</a>
-* <a href="boxesaroundrobots.com/getnumannotations">/getnumannotations: returns the number of annotated images</a>
-* <a href="boxesaroundrobots.com/remaining">/remaining: returns the number of images left to be annotated</a>
+* <a href="http://boxesaroundrobots.com">/: Main page for marking images</a>
+* <a href="http://boxesaroundrobots.com/review">/review: page for scrolling through annotated images and viewing their bounding boxes</a>
+* <a href="http://boxesaroundrobots.com/getnumannotations">/getnumannotations: returns the number of annotated images</a>
+* <a href="http://boxesaroundrobots.com/remaining">/remaining: returns the number of images left to be annotated</a>
 
 # Goals
 The long-term goal of this project is to give FTC teams a relatively streamlined interface to use neural networks for object detection during competitions. Broken down, this means my intention is to enable teams to:
