@@ -2,10 +2,10 @@
 This is the source code behind http://boxesaroundrobots.com, including all training images and processed annotations. It is also the name of a personal project to educate FTC teams in how to use neural nets for image processing.
 
 ### Webpage endpoints
-* /: Main page for marking images
-* /review: page for scrolling through annotated images and viewing their bounding boxes
-* /getnumannotations: returns the number of annotated images
-* /remaining: returns the number of images left to be annotated
+* <a href="boxesaroundrobots.com">/: Main page for marking images</a>
+* <a href="boxesaroundrobots.com/review">/review: page for scrolling through annotated images and viewing their bounding boxes</a>
+* <a href="boxesaroundrobots.com/getnumannotations">/getnumannotations: returns the number of annotated images</a>
+* <a href="boxesaroundrobots.com/remaining">/remaining: returns the number of images left to be annotated</a>
 
 # Goals
 The long-term goal of this project is to give FTC teams a relatively streamlined interface to use neural networks for object detection during competitions. Broken down, this means my intention is to enable teams to:
@@ -57,8 +57,8 @@ This can be expanded to analyze many different types of input data, including im
 If you'd like to *really* learn about neural networks, I've included several videos and other resources at the end of this document.
 
 ## YOLO
-Neural nets have been around since the later 1900's, but have only very recently (we're talking since 2012) taken off, largely due to the increased availability of training information, and faster processors. They have become very successful at classifying images, translation, object detection, and much more. We will only focus on object detection here. The neural net we will use here is called "You Only Look Once" (yes YOLO). The link to the original paper as well as more resources are included at the bottom of this document. We won't spend much time on the architecture of this net, but it is important to understand a few things about it:
-* **Size:** The version of YOLO we are using has roughly 45 million trainable parameters, and about 10 layers of neurons
+Neural nets have been around since the later 1900's, but have only very recently (we're talking since 2012) taken off, largely due to the increased availability of training information, and faster processors. They have become very successful at classifying images, translation, object detection, and much more. We will only focus on object detection here. The neural net we will use here is called "You Only Look Once" (yes YOLO). YOLO is a new (2016) architecture for single-pass object detection, meaning that the neural net does all the work, taking an image as input and outputting bounding boxes. It is one of the fastest options available, capable of running on a desktop GPU at hundreds of FPS, and so it is a good choice to use on phones which are much slower. The link to the original paper as well as more resources are included at the bottom of this document. We won't spend much time on the architecture of this net, but it is important to understand a few things about it:
+* **Size:** The version of YOLO we are using has roughly 45 million trainable parameters, and about 10 layers of neurons. This may sound like an enormous amount, but it is actually pretty small as modern nets go, and indeed the version which runs on the phone is already a trimmed version of the full net. This sacrifices a bit of accuracy in return for speed.
 * **I/O:** The input to the network is a 416x416 RGB image, and the output is a set of bounding box predictions
 * **Training:** Training this network requires images with ground truth bounding boxes drawn, hence http://boxesaroundrobots.com
 
