@@ -29,8 +29,14 @@ The answer to this question is largely based on the specific team/person, since 
 * Extremely accurate localization with few false positives compared to other vision processing techniques. Neural nets are state-of-the art technology which have recently been blowing all other techniques out of the water for vision processing.
 * Able to detect as many types of objects as you want it to (any game element you want)
 * See pictures below for examples
-![](/samples/demo1.jpg?raw=true)
-![](/samples/demo2.jpg?raw=true)
+
+<img src="/samples/demo1.jpg" width="250" >
+<img src="/samples/demo2.jpg" width="250" >
+<img src="/samples/demo4.jpg" width="250" >
+<img src="/samples/demo4.jpg" width="250" >
+<img src="/samples/demo6.jpg" width="250" >
+
+
 ### Cons
 * Currently, each frame takes about 700ms, which is pretty slow for vision processing. That said, Google has announced Tensorflow Lite coming in the next few months, which will tremendously increase the speed of processing by supporting phones' GPUs.
 * Requires large amounts of data to train detection of new objects (code for the website is intended to help teams with this).
