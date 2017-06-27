@@ -28,14 +28,14 @@ The answer to this question is largely based on the specific team/person, since 
 ### Pros
 * Extremely accurate localization with few false positives compared to other vision processing techniques. Neural nets are state-of-the art technology which have recently been blowing all other techniques out of the water for vision processing.
 * Able to detect as many types of objects as you want it to (any game element you want)
-* See pictures below for examples
-
+* See pictures below for examples. (Robot pictures are with a phone camera pointed at a laptop screen)
+<p align="center">
 <img src="/samples/demo1.jpg" width="250" >
 <img src="/samples/demo2.jpg" width="250" >
 <img src="/samples/demo4.jpg" width="250" >
-<img src="/samples/demo4.jpg" width="250" >
+<img src="/samples/demo5.jpg" width="250" >
 <img src="/samples/demo6.jpg" width="250" >
-
+</p>
 
 ### Cons
 * Currently, each frame takes about 700ms, which is pretty slow for vision processing. That said, Google has announced Tensorflow Lite coming in the next few months, which will tremendously increase the speed of processing by supporting phones' GPUs.
