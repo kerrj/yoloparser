@@ -23,12 +23,12 @@ FTC has been forging forward recently, giving teams access to more powerful proc
 * Resources
 
 ## Should I use neural nets for object detection?
-The answer to this question is largely based on the specific team/person, since using them efficiently during competition would certainly take a lot of work, more so than just using color sensors and range meters. However, for teams/students who have the persistence to keep trying and the desire to challenge themselves and learn, using neural nets could certainly be a wonderful opportunity. I've summarized some of the pros and cons of using them in a strictly competition sense below:
+The answer to this question is largely based on the specific team/person, since using them efficiently during competition would certainly take a lot of work, more so than just using color sensors and range meters. However, for teams/students who have the persistence to keep trying and the desire to challenge themselves and learn, using neural nets could certainly be a wonderful opportunity. I've summarized some of the pros and cons of using them in a strictly competition sense below.
 
 ### Pros
 * Extremely accurate localization with few false positives compared to other vision processing techniques. Neural nets are state-of-the art technology which have recently been blowing all other techniques out of the water for vision processing.
 * Able to detect as many types of objects as you want it to (any game element you want)
-* See pictures below for examples. (Robot pictures are with a phone camera pointed at a laptop screen)
+* See pictures below for examples. (Robot pictures were taken with a phone camera pointed at a laptop screen)
 <p align="center">
 <img src="/samples/demo1.jpg" width="250" >
 <img src="/samples/demo2.jpg" width="250" >
@@ -38,7 +38,7 @@ The answer to this question is largely based on the specific team/person, since 
 </p>
 
 ### Cons
-* Currently, each frame takes about 700ms, which is pretty slow for vision processing. That said, Google has announced Tensorflow Lite coming in the next few months, which will tremendously increase the speed of processing by supporting phones' GPUs.
+* Currently, processing each frame takes about 700ms, which is pretty slow for vision processing. That said, Google has announced Tensorflow Lite coming in the next few months, which will tremendously increase the speed of processing by supporting phones' GPUs.
 * Requires large amounts of data to train detection of new objects (code for the website is intended to help teams with this).
 
 
@@ -46,7 +46,7 @@ The answer to this question is largely based on the specific team/person, since 
 Let's start with a little background, If you've made it this far I'll assume you're at least a bit interested in pursuing neural nets for use this season. First I'll start by saying: neural nets sound awfully intimidating at first, but I assure you they aren't nearly as confusing as they may seem at first. Plus, I've done as much I can to simplify the process for beginners so you can do as little work as copy pasting some code into your app, or as much digging as you want if you find yourself hooked (like me).
 
 Neural nets are a computer scientist's attempt at mimicking the processes occuring inside a biological brain with math. Instead of using electrolytes, dendrites, synaptic gaps, and a whole slew of neurological jargon, neural nets are at their core simply multiplying and adding numbers in a structured way, sort of like a tree. They typically take one input and produce one output, with a bunch of neurons between. A neuron is simply a dot product: it takes the dot product of a vector of "weights" with the outputs from the previous layer, and sends that output downstream to all neurons in the next layer. The diagram below shows a simple single-input-single-output network with 2 hidden layers of 4 neurons each.
-![](/net.jpeg?raw=true)
+<p align="center"><img src="/net.jpeg"></p>
 
 You might be asking, how does this network output anything meaningful? Right now, it doesn't, because all the weights are randomized to begin. Bear with me a second, let's imagine that the three input values to our network are *[temperature, humidity, time of day]*, and the output value is the number of people at Miami Beach. *Here's where the interesting part comes*: if we **train** the network with real life data, also called the "ground truth," or "training data" it can **learn** the correlation between temperature, humidity, time of day, and the number of people at Miami Beach. Through a process called "backpropagation," the neural net slowly adjusts the weights in every neuron based on the real life training data until it starts to more accurately predict the number of people. This can be a long process, but with a relatively small net it would probably only take a matter of minutes to train up. **After** training, you have a network which can **predict** the number of people at Miami Beach based on our 3 input parameters. That's the core concept behind neural networks.
 
