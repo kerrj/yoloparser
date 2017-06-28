@@ -89,10 +89,12 @@ allprojects {
 //add this to the dependencies of build.gradle
 compile 'org.tensorflow:tensorflow-android:+'
 ```
-2. Copy <a href="https://github.com/kerrj/yoloexampleapp/blob/master/app/CMakeLists.txt">CMakeLists.txt</a> into your /app directory.
-3. Copy the entire<a href="https://github.com/kerrj/yoloexampleapp/blob/master/app/src/main/cpp">cpp directory</a> into your src/main directory.
+*Do the following if you want to use the camera stream as well, not just the neural net*
 
-The last two steps are necessary to use ImageUtils since the functions inside are native functions, meaning code written in C++. Native functions tend to run much faster than Java, so expensive operations like image processing are much more efficient.
+2. Copy <a href="https://github.com/kerrj/yoloexampleapp/blob/master/app/CMakeLists.txt">CMakeLists.txt</a> into your /app directory.
+3. Copy the entire <a href="https://github.com/kerrj/yoloexampleapp/blob/master/app/src/main/cpp">cpp directory</a> into your src/main directory.
+
+The last two steps are necessary to use ImageUtils, which is part of converting the camera frame to a Bitmap. They are native functions (written in C++) because they run much faster than Java, so expensive operations like image processing are much more efficient.
 
 # Resources
 
