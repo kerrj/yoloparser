@@ -75,7 +75,7 @@ Neural nets have been around since the later 1900's, but have only very recently
 
 Using a pretrained YOLO network in your application is actually quite straightforward: see <a href="http://github.com/kerrj/yoloexampleapp">my full example app here.</a> The class which carries out detection is TensorflowYoloDetector which implements the general Classifier interface. Simply call the recognizeImage() method in this class to retrieve a list of bounding boxes for that image. CameraInitializer is responsible for setting up a camera stream, and MainActivity is the class which initializes all relevant objects and processes frames from the camera. BitmapUtils and ImageUtils are static classes which handle, among others, YUV->RGB conversion, bitmap resizing, and bitmap cropping.
 
-To use the framework in the example app, you need to do 3 things:
+The example app is ready-to-go and should compile onto a phone provided you have all SDK and NDK tools installed. However, to use the framework in your own app, you need to do 3 things:
 1. Copy the following lines into your build.gradle. After that, you should be able to us TensorflowInferenceInterface freely.
 
 ```
