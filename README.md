@@ -26,7 +26,7 @@ FTC has been forging forward recently, giving teams access to more powerful proc
 * <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#yolo">Background on YOLO</a>
 * <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#using-a-pretrained-neural-net-in-your-android-app">Using a pretrained YOLO model in an Android app</a>
 * <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#how-can-i-train-yolo-on-custom-objects">Training your own neural net</a>
-* <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#resources">Resources</a
+* <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#resources">Resources</a>
 
 ## Should I use neural nets for object detection?
 **TL;DR** If Tensorflow Lite significantly speeds up processing like I expect it to, this technique is promising in a technical sense, since it is unmatched in accuracy and flexibility. There will, however, be a steep learning curve so I'd recommend this to experienced programmers who would like to challenge themselves and learn.
