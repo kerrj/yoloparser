@@ -115,7 +115,7 @@
       if(contains(mousepos,rects[g])){
         if(deletecand==undefined){
           deletecand=g
-        }else if(rects[g].area()<rects[deletecand].area()){
+        }else if(rects[g].area<rects[deletecand].area){
           deletecand=g
         }
       }
