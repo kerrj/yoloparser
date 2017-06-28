@@ -16,7 +16,11 @@
       this.width=width
       this.height=height
     }
+    get area(){
+      return this.width*this.height
+    }
   }
+  
   class BoundingBox{
         constructor(name,xmin,ymin,xmax,ymax){
           this.name=name
@@ -25,7 +29,10 @@
           this.ymax=ymax
           this.xmax=xmax
         }
-      }
+    }
+  function contains(mousepos,rect){
+    return (mousepos.x>rect.x && mousepos.x<(rect.x+rect.width) && mousepos.y>rect.y && mousepos.y<(rect.y+rect.height))
+  }
   function redraw(){
     canvas.width=img.width
     canvas.height=img.height
@@ -47,24 +54,23 @@
           context.lineWidth=4
           context.strokeStyle='rgba(255,255,0,255)'
           context.strokeRect(rect.x,rect.y,rect.width,rect.height)
-        }
+      }
     for(i=0;i<rects.length;i++){
       r=rects[i]
-      context.lineWidth=2
+      context.lineWidth=1
       context.strokeStyle='rgba(0,255,0,255)'
       context.strokeRect(r.x,r.y,r.width,r.height)
       n=names[i]
       if(n!=undefined){
         context.fillStyle='rgba(0,255,0,255)'
-        context.font='bold 20px Arial'
-        context.fillText(n,r.x+2,r.y+18)
+        context.font='bold 10px Arial'
+        context.fillText(n,r.x+2,r.y-5)
       }
     }
     if(name!=""){
-      r=rects[rects.length-1]
       context.fillStyle='rgba(255,255,0,255)'
-      context.font='bold 25px Arial'
-      context.fillText(name,r.x+2,r.y+18)
+      context.font='bold 15px Arial'
+      context.fillText(name,rect.x+2,rect.y+-5)
     }
   }
   var press,rect,mousedown
@@ -102,6 +108,27 @@
     ymin=Math.max(0,ymin)
     return new Rect(xmin,ymin,xmax-xmin,ymax-ymin)
   }
+  
+  function activateRect(mousepos){
+    var deletecand;
+    for(g=0;g<rects.length;g++){
+      if(contains(mousepos,rects[g])){
+        if(deletecand==undefined){
+          deletecand=g
+        }else if(rects[g].area()<rects[deletecand].area()){
+          deletecand=g
+        }
+      }
+    }
+    if(deletecand!=undefined){
+      rect=rects[deletecand]
+      name=names[deletecand]
+      rects.splice(deletecand,1)
+      names.splice(deletecand,1)
+    }
+    redraw()
+  }
+  
   function loadAnnotation(){
     $.ajax({
       type: "POST",
@@ -139,103 +166,95 @@
     clearInterval(interval)
   }
   document.addEventListener('keydown',function(evt){
-        if(typing){
-          if(evt.code=="Backspace"){
-            name=name.slice(0,name["length"]-1)
-            redraw()
-            return
-          }
-          if(evt.code=="Enter"){
-            names.push(name)
-            name=""
-            redraw()
-            typing=false
-            return
-          }
-          if(evt.code=="Escape"){
-            name=""
-            typing=false
-            if(names.length==rects.length){
-              names.pop()
-              rects.pop() 
-            }else{
-              rects.pop()
-            }
-            redraw()
-            return
-          }
-          name=name+evt.key
-          redraw()
-          return
-        }
-        if(evt.code=="Enter"){
-          if(rect==undefined){
-            return
-          }
-          typing=true
-          name=""
-          rects.push(rect)
-          rect=undefined
-          redraw()
-          return
+        if(evt.code=="Digit1"){
+          redball()
+        }else if(evt.code=="Digit2"){
+          blueball()
         }
         if(evt.code=="KeyS"){
-          bboxes=[]
-          for(i=0;i<names.length;i++){
-            r=rects[i]
-            n=names[i]
-            bboxes.push(new BoundingBox(n,r.x,r.y,r.x+r.width,r.y+r.height))
-          }
-          $.ajax({
-            type: "POST",
-            url: "/saveresults",
-            data: { boxes: bboxes,length:bboxes.length,imgname:iname,width:img.width,height:img.height,success: function(result){
-                k++;
-                loadAnnotation();
-              } 
-            }
-           }); 
-          return
+          save()
         }
-        if(evt.code=="Escape"){
-          if(names.length==rects.length){
-            names.pop()
-            rects.pop() 
-          }else{
-            rects.pop()
-          }
-          rect=undefined
-          redraw()
-          return
+        if(evt.code=="KeyU"){
+          undo()
         }
         if(evt.code=="ArrowRight"){
-          k++
-          loadAnnotation()
+          k++;loadAnnotation()
         }
         if(evt.code=="ArrowLeft"){
-          k--
-          loadAnnotation()
+          k--;loadAnnotation();
         }
       },false)
-      canvas.onmousemove=function(evt) {
-        mousePos = getMousePos(canvas, evt);
-        mousex=mousePos.x
-        mousey=mousePos.y
-        if(mousedown){
-          rect=getRect(press,mousePos)
-          redraw()
-          return
-        }
-        redraw()
-      }
       
-      canvas.onmousedown=function(evt){
-        press=getMousePos(canvas,evt)
-        mousedown=true
+  canvas.onmousemove=function(evt) {
+    mousePos = getMousePos(canvas, evt);
+    mousex=mousePos.x
+    mousey=mousePos.y
+    if(mousedown){
+      rect=getRect(press,mousePos)
+      redraw()
+      return
+    }
+    redraw()
+  }
+  redball=function(){
+    if(rect==undefined){
+      return
+    }
+    rects.push(rect)
+    rect=undefined
+    names.push("redball")
+    redraw()
+  }
+  blueball=function(){
+    if(rect==undefined){
+      return
+    }
+    rects.push(rect)
+    rect=undefined
+    names.push("blueball")
+    redraw()
+  }
+  save=function(){
+    if(rects.length==0){
+      return
+    }
+    bboxes=[]
+    for(i=0;i<names.length;i++){
+      r=rects[i]
+      n=names[i]
+      bboxes.push(new BoundingBox(n,r.x,r.y,r.x+r.width,r.y+r.height))
+    }
+    $.ajax({
+      type: "POST",
+      url: "/saveresults",
+      data: { boxes: bboxes,length:bboxes.length,imgname:iname,width:img.width,height:img.height,success: function(result){
+          k++;loadAnnotation();
+        } 
       }
-      canvas.onmouseup=function(evt){
-        mousedown=false
-      }
+     }); 
+  }
+  undo=function(){
+   if(names.length==rects.length){
+      names.pop()
+      rects.pop() 
+    }else{
+      rects.pop()
+    }
+    rect=undefined
+    redraw()
+  }
+  canvas.onmousedown=function(evt){
+    name=""
+    press=getMousePos(canvas,evt)
+    mousedown=true
+  }
+  canvas.onmouseup=function(evt){
+    mousepos=getMousePos(canvas,evt)
+    if(Math.hypot(mousepos.x-press.x,mousepos.y-press.y)<2){
+      activateRect(mousepos);
+    }
+    mousedown=false
+  }
   previousButton.onclick=function(){k--;loadAnnotation()}
   nextButton.onclick=function(){k++;loadAnnotation()}
 </script>
