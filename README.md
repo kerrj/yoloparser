@@ -21,12 +21,12 @@ The long-term goal of this project is to give FTC teams a relatively streamlined
 FTC has been forging forward recently, giving teams access to more powerful processors, sensors, and most importantly a camera. FTC has always tried to educate students about robotics, so I hope this project can not only expand the tools in teams' toolboxes, but also teach about an exciting recent development in computer science.
 
 ### Contents
-* <a href="https://github.com/kerrj/yoloparser/edit/master/README.md#should-i-use-neural-nets-for-object-detection">Should I use this?</a>
-* Background on neural nets
-* Background on YOLO
-* Using a pretrained YOLO model in an Android app
-* Training your own neural net
-* Resources
+* <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#should-i-use-neural-nets-for-object-detection">Should I use this?</a>
+* <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#crash-course-in-neural-nets">Background on neural nets</a>
+* <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#yolo">Background on YOLO</a>
+* <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#using-a-pretrained-neural-net-in-your-android-app">Using a pretrained YOLO model in an Android app</a>
+* <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#how-can-i-train-yolo-on-custom-objects">Training your own neural net</a>
+* <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#resources">Resources</a
 
 ## Should I use neural nets for object detection?
 **TL;DR** If Tensorflow Lite significantly speeds up processing like I expect it to, this technique is promising in a technical sense, since it is unmatched in accuracy and flexibility. There will, however, be a steep learning curve so I'd recommend this to experienced programmers who would like to challenge themselves and learn.
