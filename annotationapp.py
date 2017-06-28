@@ -54,10 +54,22 @@ def get_remaining():
 def get_annotation():
     data=request.form
     index=int(data['index'])
-    for root,dirs,annotations in os.walk('./static/annotations'):
-        annotation=annotations[index]
+    for root,dirs,files in os.walk('./static/annotations'):
+        annotations=files
+    #searching=True
+    #while searching:
+        #annotation=annotations[index]
+        #image=annotation.split('.')[0]+'.jpg'
+        #bboxes=annotation_writer.load_annotation(annotation)
+        #for box in bboxes:
+            #if box.name=='ball':
+                #searching=False
+                #break
+        #index+=1
+        #print(index)
+    annotation=annotations[index]
     image=annotation.split('.')[0]+'.jpg'
-    bboxes=annotation_writer.load_annotation(annotation)
+    bboxes=annotation_writer.load_annotation(annotation)    
     boxesjson=''
     for box in bboxes:
         boxesjson+=box.to_json()+','
