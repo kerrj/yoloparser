@@ -21,7 +21,7 @@ The long-term goal of this project is to give FTC teams a relatively streamlined
 FTC has been forging forward recently, giving teams access to more powerful processors, sensors, and most importantly a camera. FTC has always tried to educate students about robotics, so I hope this project can not only expand the tools in teams' toolboxes, but also teach about an exciting recent development in computer science.
 
 ### Contents
-* Should I use this?
+* <a href="https://github.com/kerrj/yoloparser/edit/master/README.md#should-i-use-neural-nets-for-object-detection">Should I use this?</a>
 * Background on neural nets
 * Background on YOLO
 * Using a pretrained YOLO model in an Android app
