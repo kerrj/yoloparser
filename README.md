@@ -1,4 +1,6 @@
 # Boxes Around Robots
+Ever wonder if using neural nets for image processing in FTC is possible? This page leads you through how!
+
 This is the source code behind http://boxesaroundrobots.com, including all training images and processed annotations. It is also the name of a personal project to educate FTC teams in how to use neural nets for image processing.
 
 ### Webpage endpoints
