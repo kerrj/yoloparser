@@ -1,7 +1,11 @@
 # Boxes Around Robots
 Ever wonder if using neural nets for image processing in FTC is possible? This page leads you through how!
 
-This is the source code behind http://boxesaroundrobots.com, including all training images and processed annotations. It is also the name of a personal project to educate FTC teams in how to use neural nets for image processing.
+If you'd like to see immediate results, follow instructions in the "Using a pretrained model" section.
+
+If you'd like to spend some time learning about neural nets and how you can use them in FTC, read on!
+
+This is also the source code behind http://boxesaroundrobots.com, including all training images and processed annotations.
 
 ### Webpage endpoints
 * <a href="http://boxesaroundrobots.com">/: Main page for marking images</a>
@@ -25,6 +29,8 @@ FTC has been forging forward recently, giving teams access to more powerful proc
 * Resources
 
 ## Should I use neural nets for object detection?
+**TL;DR** If Tensorflow Lite significantly speeds up processing like I expect it to, this technique is promising in a technical sense, since it is unmatched in accuracy and flexibility. There will, however, be a steep learning curve so I'd recommend this to experienced programmers who would like to challenge themselves and learn.
+
 The answer to this question is largely based on the specific team/person, since using them efficiently during competition would certainly take a lot of work, more so than just using color sensors and range meters. However, for teams/students who have the persistence to keep trying and the desire to challenge themselves and learn, using neural nets could certainly be a wonderful opportunity. I've summarized some of the pros and cons of using them in a strictly competition sense below.
 
 ### Pros
@@ -67,7 +73,10 @@ Neural nets have been around since the later 1900's, but have only very recently
 # Using a pretrained neural net in your Android app
 **NOTE**:*This section and the example app currently use TensorflowInferenceInterface for exectuting the neural net. When Tensorflow Lite is released that will become obsolete, and this section will be updated.*
 
-Using a pretrained YOLO network in your application is actually quite easy: see <a href="http://github.com/kerrj/yoloexampleapp">my full example app here.</a> The first step is adding the following lines to your build.gradle file
+Using a pretrained YOLO network in your application is actually quite straightforward: see <a href="http://github.com/kerrj/yoloexampleapp">my full example app here.</a> The class which carries out detection is TensorflowYoloDetector which implements the general Classifier interface. Simply call the recognizeImage() method in this class to retrieve a list of bounding boxes for that image. CameraInitializer is responsible for setting up a camera stream, and MainActivity is the class which initializes all relevant objects and processes frames from the camera. BitmapUtils and ImageUtils are static classes which handle, among others, YUV->RGB conversion, bitmap resizing, and bitmap cropping.
+
+To use the framework in the example app, you need to do 3 things:
+1. Copy the following lines into your build.gradle. After that, you should be able to us TensorflowInferenceInterface freely.
 
 ```
 //add these to the base of build.gradle
@@ -80,6 +89,10 @@ allprojects {
 //add this to the dependencies of build.gradle
 compile 'org.tensorflow:tensorflow-android:+'
 ```
+2. Copy <a href="https://github.com/kerrj/yoloexampleapp/blob/master/app/CMakeLists.txt">CMakeLists.txt</a> into your /app directory.
+3. Copy the entire<a href="https://github.com/kerrj/yoloexampleapp/blob/master/app/src/main/cpp">cpp directory</a> into your src/main directory.
+
+The last two steps are necessary to use ImageUtils since the functions inside are native functions, meaning code written in C++. Native functions tend to run much faster than Java, so expensive operations like image processing are much more efficient.
 
 # Resources
 
