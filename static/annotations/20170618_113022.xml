@@ -1,1 +1,1 @@
-<annotation><filename>20170618_113022.jpg</filename><size><width>461</width><height>461</height><depth>3</depth></size><object><name>ball</name><bndbox><xmin>160</xmin><ymin>141.2142791748047</ymin><xmax>305</xmax><ymax>284.2142791748047</ymax></bndbox></object></annotation>
+<annotation><filename>20170618_113022.jpg</filename><size><width>461</width><height>461</height><depth>3</depth></size><object><name>redball</name><bndbox><xmin>160</xmin><ymin>141</ymin><xmax>305</xmax><ymax>284</ymax></bndbox></object></annotation>
