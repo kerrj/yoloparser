@@ -47,6 +47,9 @@ save an incorrect annotation, click "Previous Image" to return to the previous i
       }
       function generateButtons(labels){
         var p=document.getElementById('buttonparagraph')
+        while(p.childElementCount>0){
+          p.removeChild(p.children[0])
+        }
         for(l=0;l<labels.length;l++){
           var button=document.createElement('button')
           button.textContent=labels[l]+"("+parseInt(l+1)+")"
@@ -67,22 +70,25 @@ save an incorrect annotation, click "Previous Image" to return to the previous i
         button.onclick=oops
         p.appendChild(button)
         
+        p=document.getElementById('dlparagraph')
+        if(p.childElementCount>0)p.removeChild(p.children[0])
         var downloadlink=document.createElement('a')
         downloadlink.text='Click to download a zip file of annotations for repository '+rowner+'/'+rname
         downloadlink.href='/download/'+rowner+'/'+rname
-        p=document.getElementById('dlparagraph')
         p.appendChild(downloadlink)
         
+        p=document.getElementById('remainingparagraph')
+        if(p.childElementCount>0)p.removeChild(p.children[0])
         var downloadlink=document.createElement('a')
         downloadlink.text='See how many remaining images there are to be annotated here'
         downloadlink.href='/remaining/'+rowner+'/'+rname
-        p=document.getElementById('remainingparagraph')
         p.appendChild(downloadlink)
         
+        p=document.getElementById('numparagraph')
+        if(p.childElementCount>0)p.removeChild(p.children[0])
         var downloadlink=document.createElement('a')
         downloadlink.text='See how many annotated images there are so far here'
         downloadlink.href='/getnumannotations/'+rowner+'/'+rname
-        p=document.getElementById('numparagraph')
         p.appendChild(downloadlink)
       }
       class Rect{
