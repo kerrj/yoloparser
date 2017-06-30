@@ -5,13 +5,7 @@ If you'd like to see immediate results, follow instructions in the "Using a pret
 
 If you'd like to spend some time learning about neural nets and how you can use them in FTC, read on!
 
-This is also the source code behind http://boxesaroundrobots.com, including all training images and processed annotations.
-
-### Webpage endpoints
-* <a href="http://boxesaroundrobots.com">/: Main page for marking images</a>
-* <a href="http://boxesaroundrobots.com/review">/review: page for scrolling through annotated images and viewing their bounding boxes</a>
-* <a href="http://boxesaroundrobots.com/getnumannotations">/getnumannotations: returns the number of annotated images</a>
-* <a href="http://boxesaroundrobots.com/remaining">/remaining: returns the number of images left to be annotated</a>
+This is also the source code behind http://boxesaroundrobots.com, including all processed annotations. The corresponding dataset of images is located <a href="https://github.com/kerrj/yolodata">here</a>
 
 # Goals
 The long-term goal of this project is to give FTC teams a relatively streamlined interface to use neural networks for object detection during competitions. Broken down, this means my intention is to enable teams to:
@@ -125,44 +119,12 @@ One of the most important parts of developing a successful neural net is supplyi
 * Include many different **backgrounds** and **lighting conditions** of the desired object(s)
 * Include many different **sizes** of the desired object(s) if you want to detect it at many distances.
 * Draw bounding boxes in a **consistent** way, for example try to leave the same margin around the object, instead of drawing some boxes close and some much further away.
-* 
 
-The code in this repository eases the load of annotating images. It is a Flask app which can be deployed on a server either locally or publicly which automatically lets you draw bounding boxes and saves formatted .xml annotations for you. To use the app locally simply clone this repository and install Flask:
-```
-pip install Flask
-```
-See how to run this app locally <a href="http://flask.pocoo.org/docs/0.12/quickstart/">here</a>. Use annotationapp.py as the base for the Flask app (replace hello.py from the documentation).
-
-To collect training data paste all the images (as ".jpg"s) you want parsed in the static/images directory. **Note**: You need to make sure there are no dashes, periods, or spaces in the filenames, the "dashkiller.py" script in this repository deletes all of these from your filenames.
-
-Lastly, to choose the names of the objects you want to annotate, you need to edit <a href="/templates/home.html">home.html</a> to include your desired object names. To save a bounding box with the desired name create a function with this format:
-```
-objectname=function(){
-    if(rect==undefined){
-      return
-    }
-    rects.push(rect)
-    rect=undefined
-    names.push("objectname")
-    redraw()
-    }
-```
-Then call that function by binding an HTML Button onclick to it like this:
-```
-document.getElementById("buttonid").onclick=objectname
-```
-To bind this to a hotkey, edit the following chunk of code to add the desired hotkeys:
-```
-document.addEventListener('keydown',function(evt){
-        if(evt.code=="Digit4"){//this will bind your object to the 4 key
-          objectname()
-        }
-        ...
-      },false)
-```
-Now you should be all set!
-
-**Note**: if you'd like to deploy the app on a public domain like boxesaroundrobots.com I recommend using DigitalOcean as a server provider, and then using gunicorn and nginx to host your server. You shouldn't expose the raw Flask app directly. For most intents and purposes though, a local version is probably enough, since anyone on the wifi network can access your app.
+This task is made easy with <a href="http://boxesaroundrobots.com">the website</a> since it handles all annotation parsing for you. All you have to do is:
+* Upload all the images you want annotated to a (public) GitHub repo
+* Go to <a href="http://boxesaroundrobots.com">boxesaroundrobots.com</a> and enter the GitHub username the repo is owned by, and the repo name. Also enter a list of objects you want to parse like "ball,robot,yogaball".
+* Follow instructions to annotate images
+* Download a zip of your annotations with the provided link.
 
 ## Training
 After you've collected a set of training images and have .xml annotations for each, you can now train your model! The documentation at Darkflow does a good job explaining the process, so I won't detail it here. You are interested primarily in the section of the readme titled "Training new model".
