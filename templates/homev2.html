@@ -36,9 +36,9 @@ save an incorrect annotation, click "Previous Image" to return to the previous i
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
       document.getElementById('register').onclick=function(){
-        o=document.getElementById('owner').value
-        n=document.getElementById('name').value
-        labels=document.getElementById('objects').value.split(',')
+        o=document.getElementById('owner').value.toLowerCase()
+        n=document.getElementById('name').value.toLowerCase()
+        labels=document.getElementById('objects').value.toLowerCase().split(',')
         registerRepo(o,n)
         generateButtons(labels)
       }
