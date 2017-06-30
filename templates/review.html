@@ -2,13 +2,76 @@
 <html>
 <body>
 <title>Image Annotation Reviewer</title>
+<p>First indicate where your training images are, and what objects you want to parse these images for</p>
+<input type="text" id="owner" placeholder="GitHub Username"></input>
+<input type="text" id="name" placeholder="Repository Name"></input>
+<input size="50" type="text" id="objects" placeholder="Comma-Separated List of Objects"></input>
+<button id="register">Submit</button>
+<p>You can click inside boxes to select them and change them, and draw new boxes as normal</p>
 <p>
 <button id="previousButton">Previous</button>
 <button id="nextButton">Next</button>
 </p>
+<p id="buttonparagraph" style="margin-top:.1em;margin-bottom:.1em;"></p>
+
 <canvas id="myCanvas" width="100" height="100">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
+  document.getElementById('register').onclick=function(){
+    o=document.getElementById('owner').value.toLowerCase()
+    n=document.getElementById('name').value.toLowerCase()
+    labels=document.getElementById('objects').value.toLowerCase().split(',')
+    registerRepo(o,n)
+    generateButtons(labels)
+  }
+  function generateButtons(labels){
+    var p=document.getElementById('buttonparagraph')
+    for(l=0;l<labels.length;l++){
+      var button=document.createElement('button')
+      button.textContent=labels[l]+"("+parseInt(l+1)+")"
+      button.id=labels[l]
+      button.onclick=saveRect
+      p.appendChild(button)
+    }
+    var button=document.createElement('button')
+    button.textContent='Save (S)'
+    button.onclick=save
+    p.appendChild(button)
+    var button=document.createElement('button')
+    button.textContent='Undo (U)'
+    button.onclick=undo
+    p.appendChild(button)
+    var downloadlink=document.createElement('a')
+    downloadlink.text='Click to download zip file of annotations for repository '+rowner+'/'+rname
+    downloadlink.href='/download/'+rowner+'/'+rname
+  }
+  function registerRepo(o,n){
+    rowner=o
+    rname=n
+    startInterval()
+    loadAnnotation()
+  }
+  saveRect=function(obj){
+    if(rect==undefined){
+      return
+    }
+    rects.push(rect)
+    rect=undefined
+    names.push(this.id)
+    redraw()
+  }
+  saveRectWithKey=function(key){
+    if(rect==undefined){
+      return
+    }
+    if(key>labels.length||key==0){
+      return
+    }
+    rects.push(rect)
+    rect=undefined
+    names.push(labels[key-1])
+    redraw()
+  }
   class Rect{
     constructor(x,y,width,height){
       this.x=x
@@ -67,11 +130,6 @@
         context.fillText(n,r.x+2,r.y-5)
       }
     }
-    if(name!=""){
-      context.fillStyle='rgba(255,255,0,255)'
-      context.font='bold 15px Arial'
-      context.fillText(name,rect.x+2,rect.y+-5)
-    }
   }
   var press,rect,mousedown
   var mousex=0;
@@ -87,9 +145,7 @@
   var img=new Image()
   var interval
   var typing=false;
-  startInterval()
   var k=1
-  loadAnnotation()
   function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
     return {
@@ -140,7 +196,7 @@
           rect=undefined
           names=[]
           iname=result['image']
-          img.src='/static/images/'+result['image']
+          img.src='http://raw.githubusercontent.com/'+rowner+'/'+rname+'/master/'+iname
           bboxes=JSON.parse(result['bboxes'])
           for(j=0;j<bboxes.length;j++){
             xmin=bboxes[j]['xmin']
@@ -151,7 +207,7 @@
             names=names.concat(bboxes[j]['name'])
           }
         },
-      data: { index:k},
+      data: { index:k,repoowner:rowner,reponame:rname},
       dataType:"json"
     }); 
   }
@@ -166,16 +222,15 @@
     clearInterval(interval)
   }
   document.addEventListener('keydown',function(evt){
-        if(evt.code=="Digit1"){
-          redball()
-        }else if(evt.code=="Digit2"){
-          blueball()
-        }
-        if(evt.code=="KeyS"){
-          save()
+        if(evt.code.substring(0,5)=="Digit"){
+          key=parseInt(evt.code.substring(5,6))
+          saveRectWithKey(key)
         }
         if(evt.code=="KeyU"){
           undo()
+        }
+        if(evt.code=="KeyS"){
+          save()
         }
         if(evt.code=="ArrowRight"){
           k++;loadAnnotation()
@@ -196,24 +251,6 @@
     }
     redraw()
   }
-  redball=function(){
-    if(rect==undefined){
-      return
-    }
-    rects.push(rect)
-    rect=undefined
-    names.push("redball")
-    redraw()
-  }
-  blueball=function(){
-    if(rect==undefined){
-      return
-    }
-    rects.push(rect)
-    rect=undefined
-    names.push("blueball")
-    redraw()
-  }
   save=function(){
     if(rects.length==0){
       return
@@ -227,7 +264,7 @@
     $.ajax({
       type: "POST",
       url: "/saveresults",
-      data: { boxes: bboxes,length:bboxes.length,imgname:iname,width:img.width,height:img.height,success: function(result){
+      data: {repoowner:rowner,reponame:rname, boxes: bboxes,length:bboxes.length,imgname:iname,width:img.width,height:img.height,success: function(result){
           k++;loadAnnotation();
         } 
       }

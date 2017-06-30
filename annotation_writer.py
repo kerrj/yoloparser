@@ -54,9 +54,9 @@ def save_annotation(imgname,bboxes,savedir,imgwidth,imgheight):
     etree.write(savedir+name+'.xml')
     return
 
-def load_annotation(imgname):
+def load_annotation(imgname,rowner,rname):
     name=imgname.split('.')[0]
-    root=ET.parse('./static/annotations/'+name+'.xml')
+    root=ET.parse('./static/annotations/'+rowner+'/'+rname+'/'+name+'.xml')
     bounding_boxes=[]
     for obj in root.findall('object'):
         name=obj.find('name').text

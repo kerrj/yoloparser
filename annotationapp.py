@@ -11,9 +11,9 @@ app=Flask(__name__)
 def home():
     return render_template('homev2.html')
 
-#@app.route('/review')
-#def review():
-    #return render_template('review.html')
+@app.route('/review')
+def review():
+    return render_template('review.html')
     
 @app.route('/saveresults',methods=['POST'])
 def save():
@@ -43,47 +43,52 @@ def oops():
     return 'success'
 
 
-#@app.route('/getnumannotations')
-#def get_num_annotations():
-    #for root,dirs,annotations in os.walk('./static/annotations'):
-        #return str(len(annotations))
+@app.route('/getnumannotations/<path:owner>/<path:name>')
+def get_num_annotations(owner,name):
+    for root,dirs,annotations in os.walk('./static/annotations/'+owner+'/'+name):
+        annotations.remove('annotations.zip')
+        return str(len(annotations))
     
-#@app.route('/remaining')
-#def get_remaining():
-    #for root,dirs,annotations in os.walk('./static/annotations'):
-        #num_a=len(annotations)
-    #for root,dirs,images in os.walk('./static/images'):
-        #num_i=len(images)   
-    #return str(num_i-num_a)
+@app.route('/remaining/<path:owner>/<path:name>')
+def get_remaining(owner,name):
+    for root,dirs,annotations in os.walk('./static/annotations/'+owner+'/'+name):
+        annotations.remove('annotations.zip')
+        num_a=len(annotations)
+    succeeded,names=get_images_from_github(owner,name)
+    num_i=len(names)
+    return str(num_i-num_a)
 
-#@app.route('/getannotation',methods=['POST'])
-#def get_annotation():
-    #data=request.form
-    #index=int(data['index'])
-    #for root,dirs,files in os.walk('./static/annotations'):
-        #annotations=files
-    ##searching=True
-    ##while searching:
-        ##annotation=annotations[index]
-        ##image=annotation.split('.')[0]+'.jpg'
-        ##bboxes=annotation_writer.load_annotation(annotation)
-        ##for box in bboxes:
-            ##if box.name=='ball':
-                ##searching=False
-                ##break
-        ##index+=1
-        ##print(index)
-    #annotation=annotations[index]
-    #image=annotation.split('.')[0]+'.jpg'
-    #bboxes=annotation_writer.load_annotation(annotation)    
-    #boxesjson=''
-    #for box in bboxes:
-        #boxesjson+=box.to_json()+','
-    #if boxesjson[-1]==',':
-        #boxesjson=boxesjson[:-1]
-    #boxesjson='['+boxesjson+']'
-    #output=json.dumps({'annotation':annotation,'image':image,'bboxes':boxesjson})
-    #return output
+@app.route('/getannotation',methods=['POST'])
+def get_annotation():
+    data=request.form
+    owner=data['repoowner']
+    name=data['reponame']
+    index=int(data['index'])
+    for root,dirs,files in os.walk('./static/annotations/'+owner+'/'+name):
+        annotations=files
+        annotations.remove('annotations.zip')
+    #searching=True
+    #while searching:
+        #annotation=annotations[index]
+        #image=annotation.split('.')[0]+'.jpg'
+        #bboxes=annotation_writer.load_annotation(annotation)
+        #for box in bboxes:
+            #if box.name=='ball':
+                #searching=False
+                #break
+        #index+=1
+        #print(index)
+    annotation=annotations[index]
+    image=annotation.split('.')[0]+'.jpg'
+    bboxes=annotation_writer.load_annotation(annotation,owner,name)    
+    boxesjson=''
+    for box in bboxes:
+        boxesjson+=box.to_json()+','
+    if boxesjson[-1]==',':
+        boxesjson=boxesjson[:-1]
+    boxesjson='['+boxesjson+']'
+    output=json.dumps({'annotation':annotation,'image':image,'bboxes':boxesjson})
+    return output
     
 
 @app.route('/register',methods=['POST'])
