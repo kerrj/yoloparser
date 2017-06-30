@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<body>
+<title>Boxes Around Robots</title>
+<h2>Boxes Around Robots</h2>
+<p>Boxes around robots is a project collecting training data for detecting robots and common game elements in FTC games. Its goal is to amass thousands of 
+images with boxes drawn around game elements and robots for training object detectors. It is <a href="http://github.com/kerrj/yoloparser">open source at GitHub</a>
+, where all code for the website resides, as well as training images and formatted annotations.
+</p>
+<h3>What is this data used for?</h3>
+<p>Modern image processing techniques like neural networks require vast amount of training data to learn to accomplish a task. 
+Popular research data-bases like <a href="http://www.image-net.org/">ImageNet</a> have millions of images categorized into classes for this purpose.
+To use neural nets to detect FTC robots, we need thousands of images with robots marked in them. I've combed Youtube videos and photos for pictures of robots, but
+now they need to be marked with robots' locations. This website is a tool for crowdsourcing that task.
+Your help is much appreciated! 
+</p>
+<h3> How can my team use this as a tool during competition?</h3>
+<p>
+For more information visit <a href="http://github.com/kerrj/yoloparser">the GitHub page.</a>
+</p>
+<h3 style="margin-bottom:.1em">Instructions</h3>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;"><a href='./static/tutorial.gif'>Example GIF</a></p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">1. Click and drag to draw a box as accurately as possible around an object</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">2. Click the button corresponding with the object name, or use the given hotkey.</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">3. Repeat for all objects in the scene.</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">4. Click "SAVE" to save your annotations, or use the hotkey</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">5. If needed, click "UNDO" to delete the most recent box,or use the hotkey. If you accidentally
+save an incorrect annotation, click "PREVIOUS IMAGE" to return to the previous image.</p>
+<p style="margin-top:.1em;margin-bottom:.1em;font-size:.9em;">NOTE: Do not classify white wiffle balls as wiffle balls, only mark blue and red.</p>
+<p id="inputparagraph">
+<input type="text" id="owner" placeholder="GitHub Username"></input>
+<input type="text" id="name" placeholder="Repository Name"></input>
+<input size="50" type="text" id="objects" placeholder="Comma-Separated List of Objects"></input>
+<button id="register">Submit</button>
+</p>
+<p id="buttonparagraph" style="margin-top:.1em;margin-bottom:.1em;"></p>
+<canvas id="myCanvas" width="100" height="100">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+      document.getElementById('register').onclick=function(){
+        o=document.getElementById('owner').value
+        n=document.getElementById('name').value
+        labels=document.getElementById('objects').value.split(',')
+        registerRepo(o,n)
+        generateButtons(labels)
+      }
+      function generateButtons(labels){
+        var p=document.getElementById('buttonparagraph')
+        for(l=0;l<labels.length;l++){
+          var button=document.createElement('button')
+          button.textContent=labels[l]+"("+parseInt(l+1)+")"
+          button.id=labels[l]
+          button.onclick=saveRect
+          p.appendChild(button)
+        }
+        var button=document.createElement('button')
+        button.textContent='Save'
+        button.onclick=save
+        p.appendChild(button)
+        var button=document.createElement('button')
+        button.textContent='Undo'
+        button.onclick=undo
+        p.appendChild(button)
+        var button=document.createElement('button')
+        button.textContent='Previous Image'
+        button.onclick=oops
+        p.appendChild(button)
+        var downloadlink=document.createElement('a')
+        downloadlink.text='Click to download zip file of annotations for repository '+rowner+'/'+rname
+        downloadlink.href='/download/'+rowner+'/'+rname
+        p=document.getElementById('inputparagraph')
+        p.appendChild(downloadlink)
+      }
+      class Rect{
+        constructor(x,y,width,height){
+          this.x=x
+          this.y=y
+          this.width=width
+          this.height=height
+        }
+      }
+      class BoundingBox{
+        constructor(name,xmin,ymin,xmax,ymax){
+          this.name=name
+          this.xmin=xmin
+          this.ymin=ymin
+          this.ymax=ymax
+          this.xmax=xmax
+        }
+      }
+      function redraw(){
+        context.clearRect(0,0,canvas.width,canvas.height)
+        context.drawImage(img,0,0)
+        context.lineWidth=4
+        context.strokeStyle='rgba(255,0,0,255)'
+        //draw x
+        context.beginPath();
+        context.moveTo(Math.min(img.width,mousex),0);
+        context.lineTo(Math.min(img.width,mousex),img.height);
+        context.stroke();
+        //draw y
+        context.beginPath();
+        context.moveTo(0,Math.min(img.height,mousey));
+        context.lineTo(img.width,Math.min(img.height,mousey));
+        context.stroke();
+        if(rect!=undefined){
+          context.lineWidth=4
+          context.strokeStyle='rgba(255,255,0,255)'
+          context.strokeRect(rect.x,rect.y,rect.width,rect.height)
+        }
+        for(i=0;i<rects.length;i++){
+          r=rects[i]
+          context.lineWidth=2
+          context.strokeStyle='rgba(0,255,0,255)'
+          context.strokeRect(r.x,r.y,r.width,r.height)
+          n=names[i]
+          if(n!=undefined){
+            context.fillStyle='rgba(0,255,0,255)'
+            context.font='bold 20px Arial'
+            context.fillText(n,r.x+2,r.y+18)
+          }
+        }
+        if(name!=""){
+            r=rects[rects.length-1]
+            context.fillStyle='rgba(255,255,0,255)'
+            context.font='bold 25px Arial'
+            context.fillText(name,r.x+2,r.y+18)
+          }
+      }
+      var pastimagename=""
+      var press,rect,mousedown
+      var rects=[]
+      var names=[]
+      var canvas = document.getElementById('myCanvas');
+      var context = canvas.getContext('2d');
+      var typing=false
+      var name=""
+      var img=new Image()
+      var iname=""
+      var interval
+      var mousex=0
+      var mousey=0
+      function startInterval(){
+        interval=setInterval(function(){
+        canvas.width=img.width+img.width/4
+        canvas.height=img.height+img.width/4
+        redraw()
+        },500)
+      }
+      function stopInterval(){
+        clearInterval(interval)
+      }
+      function writeMessage(message) {
+        context.clearRect(0,0,canvas.width,canvas.height) 
+        context.font = '10pt Calibri';
+        context.fillStyle = 'black';
+        context.fillText(message, 10, 25);
+      }
+      
+      function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+      }
+      
+      function getRect(point1,point2){
+        var xmin=Math.min(point1.x,point2.x)
+        var xmax=Math.max(point1.x,point2.x)
+        var ymin=Math.min(point1.y,point2.y)
+        var ymax=Math.max(point1.y,point2.y)
+        ymax=Math.min(ymax,img.height)
+        xmax=Math.min(xmax,img.width)
+        xmin=Math.max(0,xmin)
+        ymin=Math.max(0,ymin)
+        return new Rect(xmin,ymin,xmax-xmin,ymax-ymin)
+      }
+      
+      function registerRepo(o,n){
+        $.ajax({
+          type:'POST',
+          url:'/register',
+          data:{repoowner:o,reponame:n,success:function(content){
+              rowner=o
+              rname=n
+              startInterval()
+              loadImage()          
+            }
+          }        
+        })
+      }
+      function loadImage(){
+        $.ajax({ 
+          type:'POST',
+          url: "/getimage", 
+          data:{repoowner:rowner,reponame:rname},
+          success: function(content) {
+            names=[]
+            rects=[]
+            typing=false
+            name=""
+            rect=undefined
+            redraw()
+            if(content==""){
+              writeMessage("All images parsed")
+              stopInterval()
+              return
+            } 
+            iname=content
+            img.src='http://raw.githubusercontent.com/'+rowner+'/'+rname+'/master/'+iname
+            redraw()
+          }
+        });
+      }
+      document.addEventListener('keydown',function(evt){
+        if(evt.code.substring(0,5)=="Digit"){
+          key=parseInt(evt.code.substring(5,6))
+          saveRectWithKey(key)
+        }
+        if(evt.code=="KeyS"){
+          save()
+        }
+        if(evt.code=="KeyU"){
+          undo()
+        }
+      },false)
+      
+      oops=function(){
+        if(pastimagename==""){
+          return
+        }
+        iname=pastimagename
+        img.src='http://raw.githubusercontent.com/'+rowner+'/'+rname+'/master/'+pastimagename
+        rects=[]
+        names=[]
+        $.ajax({
+          type: "POST",
+          url: "/oops",
+          data: { repoowner:rowner,reponame:rname,image:pastimagename,repoowner:rowner,reponame:rname}
+         }); 
+      }
+      save=function(){
+        if(rects.length==0){
+          return
+        }
+        pastimagename=iname;
+        bboxes=[]
+        for(i=0;i<names.length;i++){
+          r=rects[i]
+          n=names[i]
+          bboxes.push(new BoundingBox(n,r.x,r.y,r.x+r.width,r.y+r.height))
+        }
+        $.ajax({
+          type: "POST",
+          url: "/saveresults",
+          data: { repoowner:rowner,reponame:rname,boxes: bboxes,length:bboxes.length,imgname:iname,width:img.width,height:img.height},
+          success: function(result){
+              loadImage();
+            } 
+         }); 
+      }
+      undo=function(){
+       if(names.length==rects.length){
+          names.pop()
+          rects.pop() 
+        }else{
+          rects.pop()
+        }
+        rect=undefined
+        redraw()
+      }
+      saveRect=function(obj){
+        if(rect==undefined){
+          return
+        }
+        rects.push(rect)
+        rect=undefined
+        names.push(this.id)
+        redraw()
+      }
+      saveRectWithKey=function(key){
+        if(rect==undefined){
+          return
+        }
+        if(key>labels.length||key==0){
+          return
+        }
+        rects.push(rect)
+        rect=undefined
+        names.push(labels[key-1])
+        redraw()
+      }
+      
+      canvas.onmousemove=function(evt) {
+        mousePos = getMousePos(canvas, evt);
+        mousex=mousePos.x
+        mousey=mousePos.y
+        if(mousedown){
+          rect=getRect(press,mousePos)
+          redraw()
+          return
+        }
+        redraw()
+      }
+      
+      canvas.onmousedown=function(evt){
+        press=getMousePos(canvas,evt)
+        mousedown=true
+      }
+      document.onmouseup=function(evt){
+        mousedown=false
+      }
+      
+    </script>
+</canvas>
+</body>
+</html>
