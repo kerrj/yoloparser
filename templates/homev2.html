@@ -17,6 +17,9 @@ using this website can do on an Android phone:
 <img src="/static/demo6.jpg" width="150">
 <h3 style="margin-bottom:.1em">Instructions</h3>
 <p id="inputparagraph">
+<p id="dlparagraph">
+<p id="remainingparagraph">
+<p id="numparagraph">
 <p>First indicate where your training images are, and what objects you want to parse these images for</p>
 <input type="text" id="owner" placeholder="GitHub Username"></input>
 <input type="text" id="name" placeholder="Repository Name"></input>
@@ -63,10 +66,23 @@ save an incorrect annotation, click "Previous Image" to return to the previous i
         button.textContent='Previous Image'
         button.onclick=oops
         p.appendChild(button)
+        
         var downloadlink=document.createElement('a')
-        downloadlink.text='Click to download zip file of annotations for repository '+rowner+'/'+rname
+        downloadlink.text='Click to download a zip file of annotations for repository '+rowner+'/'+rname
         downloadlink.href='/download/'+rowner+'/'+rname
-        p=document.getElementById('inputparagraph')
+        p=document.getElementById('dlparagraph')
+        p.appendChild(downloadlink)
+        
+        var downloadlink=document.createElement('a')
+        downloadlink.text='See how many remaining images there are to be annotated here'
+        downloadlink.href='/remaining/'+rowner+'/'+rname
+        p=document.getElementById('remainingparagraph')
+        p.appendChild(downloadlink)
+        
+        var downloadlink=document.createElement('a')
+        downloadlink.text='See how many annotated images there are so far here'
+        downloadlink.href='/getnumannotations/'+rowner+'/'+rname
+        p=document.getElementById('numparagraph')
         p.appendChild(downloadlink)
       }
       class Rect{
