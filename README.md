@@ -32,14 +32,13 @@ It's likely Relic Recovery will include some sort of find-and-retrieve action in
 * Size, position, pose, and distance invariant
 * See pictures below for examples. Note how even in dark or clutttered conditions it can still find balls accurately.
 <p align="center">
-<img src="/static/demo1.jpg" width="250" >
-<img src="/static/demo2.jpg" width="250" >
-<img src="/static/demo3.jpg" width="250" >
-<img src="/static/demo4.jpg" width="250" >
-<img src="/static/demo5.jpg" width="250" >
-<img src="/static/demo6.jpg" width="250" >
-<img src="/static/demo7.jpg" width="250" >
-<img src="/static/demo8.jpg" width="250" >
+<img src="/static/demo1.jpg" width="200" >
+<img src="/static/demo2.jpg" width="200" >
+<img src="/static/demo4.jpg" width="200" >
+<img src="/static/demo5.jpg" width="200" >
+<img src="/static/demo6.jpg" width="200" >
+<img src="/static/demo7.jpg" width="200" >
+<img src="/static/demo8.jpg" width="200" >
 </p>
 
 ### Cons
