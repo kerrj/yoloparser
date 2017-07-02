@@ -1,20 +1,18 @@
 # Boxes Around Robots
-Ever wonder if using neural nets for image processing in FTC is possible? This page leads you through how!
+Ever wonder if using neural nets for object detection in FTC is possible? This page leads you through how!
 
 If you'd like to see immediate results download the app on the Google Play store titled "**FTC Neural Net Demo**".
 
 If you'd like to spend some time learning about neural nets and how you can use them in FTC, read on!
 
-This is also the source code behind http://boxesaroundrobots.com, including all processed annotations. The corresponding dataset of images is located <a href="https://github.com/kerrj/yolodata">here</a>
+This is also the source code behind http://boxesaroundrobots.com, a website for annotating training images. The dataset of images the example app was trained on is located <a href="https://github.com/kerrj/yolodata">here</a>
 
 # Goals
-The long-term goal of this project is to give FTC teams a relatively streamlined interface to use neural networks for object detection during competitions. Broken down, this means my intention is to enable teams to:
-* Transplant a pre-trained network into their robots which already detects game elements like robots and balls
-* Create their own training data and train a custom neural net object detector
+* Teach teams how to train a custom neural net object detector for use during the season
+* FTC has always tried to educate students about robotics, so I hope this project can not only expand the tools in teams' toolboxes, but also teach about an exciting recent development in computer science.
+* Challenge teams to push the limits of what's possible with the Android hardware.
 
-FTC has been forging forward recently, giving teams access to more powerful processors, sensors, and most importantly a camera. FTC has always tried to educate students about robotics, so I hope this project can not only expand the tools in teams' toolboxes, but also teach about an exciting recent development in computer science.
-
-### Contents
+# Contents
 * <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#should-i-use-neural-nets-for-object-detection">Should I use this?</a>
 * <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#crash-course-in-neural-nets">Background on neural nets</a>
 * <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#yolo">Background on YOLO</a>
@@ -22,16 +20,17 @@ FTC has been forging forward recently, giving teams access to more powerful proc
 * <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#how-can-i-train-yolo-on-custom-objects">Training your own neural net</a>
 * <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#resources">Resources</a>
 
-## Should I use neural nets for object detection?
-**TL;DR** If Tensorflow Lite significantly speeds up processing like I expect it to, this technique is promising in a technical sense, since it is unmatched in accuracy and flexibility. There will, however, be a steep learning curve so I'd recommend this to experienced programmers who would like to challenge themselves and learn.
+# Should I use neural nets for object detection?
+The answer to this question is largely based on the specific team/person, since using them efficiently during competition would certainly take a lot of work. However, for teams/students who have the persistence to keep trying and the desire to challenge themselves and learn, using neural nets could certainly be a powerful tool in competition as well as a wonderful opportunity to learn.
 
-The answer to this question is largely based on the specific team/person, since using them efficiently during competition would certainly take a lot of work, more so than just using color sensors and range meters. However, for teams/students who have the persistence to keep trying and the desire to challenge themselves and learn, using neural nets could certainly be a wonderful opportunity. I've summarized some of the pros and cons of using them in a strictly competition sense below.
-
+It's likely Relic Recovery will include some sort of find-and-retrieve action in the game, so this could prove very useful in locating game elements.
 ### Pros
 * Extremely accurate localization with few false positives compared to other vision processing techniques. Neural nets are state-of-the art technology which have recently been blowing all other techniques out of the water for vision processing.
+* Robust against lighting and environment variation
 * Able to detect as many types of objects as you want it to (any game element you want)
 * Able to detect abstract and complicated objects such as robots and people
-* See pictures below for examples. (Robot pictures were taken with a phone camera pointed at a laptop screen)
+* Size, position, pose, and distance invariant
+* See pictures below for examples. Note how even in dark or clutttered conditions it can still find balls accurately.
 <p align="center">
 <img src="/samples/demo1.jpg" width="250" >
 <img src="/samples/demo2.jpg" width="250" >
@@ -45,7 +44,7 @@ The answer to this question is largely based on the specific team/person, since 
 * Requires large amounts of data to train detection of new objects (code for the website is intended to help teams with this).
 
 
-## Crash course in neural nets
+# Crash course in neural nets
 Let's start with a little background, If you've made it this far I'll assume you're at least a bit interested in pursuing neural nets for use this season. First I'll start by saying: neural nets sound awfully intimidating at first, but I assure you they aren't nearly as confusing as they may seem at first. Plus, I've done as much I can to simplify the process for beginners so you can do as little work as copy pasting some code into your app, or as much digging as you want if you find yourself hooked (like me).
 
 Neural nets are a computer scientist's attempt at mimicking the processes occuring inside a biological brain with math. Instead of using electrolytes, dendrites, synaptic gaps, and a whole slew of neurological jargon, neural nets are at their core simply multiplying and adding numbers in a structured way, sort of like a tree. They typically take one input and produce one output, with a bunch of neurons between. A neuron is simply a dot product: it takes the dot product of a vector of "weights" with the outputs from the previous layer, and sends that output downstream to all neurons in the next layer. The diagram below shows a simple single-input-single-output network with 2 hidden layers of 4 neurons each.
