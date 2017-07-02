@@ -1,20 +1,18 @@
 # Boxes Around Robots
-Ever wonder if using neural nets for image processing in FTC is possible? This page leads you through how!
+Ever wonder if using neural nets for object detection in FTC is possible? This page leads you through how!
 
-If you'd like to see immediate results, follow instructions in the "Using a pretrained model" section.
+If you'd like to see immediate results download the app on the Google Play store titled "**FTC Neural Net Demo**".
 
 If you'd like to spend some time learning about neural nets and how you can use them in FTC, read on!
 
-This is also the source code behind http://boxesaroundrobots.com, including all processed annotations. The corresponding dataset of images is located <a href="https://github.com/kerrj/yolodata">here</a>
+This is also the source code behind http://boxesaroundrobots.com, a website for annotating training images. The dataset of images the example app was trained on is located <a href="https://github.com/kerrj/yolodata">here</a>
 
 # Goals
-The long-term goal of this project is to give FTC teams a relatively streamlined interface to use neural networks for object detection during competitions. Broken down, this means my intention is to enable teams to:
-* Transplant a pre-trained network into their robots which already detects game elements like robots and balls
-* Create their own training data and train a custom neural net object detector
+* Teach teams how to train a custom neural net object detector for use during the season
+* FTC has always tried to educate students about robotics, so I hope this project can not only expand the tools in teams' toolboxes, but also teach about an exciting recent development in computer science.
+* Challenge teams to push the limits of what's possible with the Android hardware.
 
-FTC has been forging forward recently, giving teams access to more powerful processors, sensors, and most importantly a camera. FTC has always tried to educate students about robotics, so I hope this project can not only expand the tools in teams' toolboxes, but also teach about an exciting recent development in computer science.
-
-### Contents
+# Contents
 * <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#should-i-use-neural-nets-for-object-detection">Should I use this?</a>
 * <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#crash-course-in-neural-nets">Background on neural nets</a>
 * <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#yolo">Background on YOLO</a>
@@ -22,16 +20,17 @@ FTC has been forging forward recently, giving teams access to more powerful proc
 * <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#how-can-i-train-yolo-on-custom-objects">Training your own neural net</a>
 * <a href="https://github.com/kerrj/yoloparser/blob/master/README.md#resources">Resources</a>
 
-## Should I use neural nets for object detection?
-**TL;DR** If Tensorflow Lite significantly speeds up processing like I expect it to, this technique is promising in a technical sense, since it is unmatched in accuracy and flexibility. There will, however, be a steep learning curve so I'd recommend this to experienced programmers who would like to challenge themselves and learn.
+# Should I use neural nets for object detection?
+The answer to this question is largely based on the specific team/person, since using them efficiently during competition would certainly take a lot of work. However, for teams/students who have the persistence to keep trying and the desire to challenge themselves and learn, using neural nets could certainly be a powerful tool in competition as well as a wonderful opportunity to learn.
 
-The answer to this question is largely based on the specific team/person, since using them efficiently during competition would certainly take a lot of work, more so than just using color sensors and range meters. However, for teams/students who have the persistence to keep trying and the desire to challenge themselves and learn, using neural nets could certainly be a wonderful opportunity. I've summarized some of the pros and cons of using them in a strictly competition sense below.
-
+It's likely Relic Recovery will include some sort of find-and-retrieve action in the game, so this could prove very useful in locating game elements.
 ### Pros
 * Extremely accurate localization with few false positives compared to other vision processing techniques. Neural nets are state-of-the art technology which have recently been blowing all other techniques out of the water for vision processing.
+* Robust against lighting and environment variation
 * Able to detect as many types of objects as you want it to (any game element you want)
 * Able to detect abstract and complicated objects such as robots and people
-* See pictures below for examples. (Robot pictures were taken with a phone camera pointed at a laptop screen)
+* Size, position, pose, and distance invariant
+* See pictures below for examples. Note how even in dark or clutttered conditions it can still find balls accurately.
 <p align="center">
 <img src="/samples/demo1.jpg" width="250" >
 <img src="/samples/demo2.jpg" width="250" >
@@ -45,7 +44,7 @@ The answer to this question is largely based on the specific team/person, since 
 * Requires large amounts of data to train detection of new objects (code for the website is intended to help teams with this).
 
 
-## Crash course in neural nets
+# Crash course in neural nets
 Let's start with a little background, If you've made it this far I'll assume you're at least a bit interested in pursuing neural nets for use this season. First I'll start by saying: neural nets sound awfully intimidating at first, but I assure you they aren't nearly as confusing as they may seem at first. Plus, I've done as much I can to simplify the process for beginners so you can do as little work as copy pasting some code into your app, or as much digging as you want if you find yourself hooked (like me).
 
 Neural nets are a computer scientist's attempt at mimicking the processes occuring inside a biological brain with math. Instead of using electrolytes, dendrites, synaptic gaps, and a whole slew of neurological jargon, neural nets are at their core simply multiplying and adding numbers in a structured way, sort of like a tree. They typically take one input and produce one output, with a bunch of neurons between. A neuron is simply a dot product: it takes the dot product of a vector of "weights" with the outputs from the previous layer, and sends that output downstream to all neurons in the next layer. The diagram below shows a simple single-input-single-output network with 2 hidden layers of 4 neurons each.
@@ -67,12 +66,13 @@ Neural nets have been around since the later 1900's, but have only very recently
 ## Tensorflow
 Tensorflow is a recently launched, quickly growing, open-source framework for neural nets developed by Google. You probably use Tensorflow on a daily basis, since it is the framework Google uses in their search engine for intelligent results and much more. It is what we will use to train and execute our neural net, both on desktops and on mobile devices.
 
-# Using a pretrained neural net in your Android app
+# Using a pretrained YOLO model in your Android app
+If you just want to see something work, download the full example app on the Google Play Store titled "**FTC Neural Net Demo**". All the source code is located <a href="http://github.com/kerrj/yoloexampleapp">here.</a>
+
 **NOTE**:*This section and the example app currently use TensorflowInferenceInterface for exectuting the neural net. When Tensorflow Lite is released that will become obsolete, and this section will be updated.*
 
-Using a pretrained YOLO network in your application is actually quite straightforward: see <a href="http://github.com/kerrj/yoloexampleapp">my full example app here.</a> The class which carries out detection is TensorflowYoloDetector which implements the general Classifier interface. Simply call the recognizeImage() method in this class to retrieve a list of bounding boxes for that image. CameraInitializer is responsible for setting up a camera stream, and MainActivity is the class which initializes all relevant objects and processes frames from the camera. BitmapUtils and ImageUtils are static classes which handle, among others, YUV->RGB conversion, bitmap resizing, and bitmap cropping.
+Using a pretrained YOLO network in your application is actually quite straightforward. The example app is ready-to-go and should compile onto a phone provided you have all SDK and NDK tools installed. However, **to use the framework in your own app, you need to do 3 things**:
 
-The example app is ready-to-go and should compile onto a phone provided you have all SDK and NDK tools installed. However, to use the framework in your own app, you need to do 3 things:
 1. Copy the following lines into your build.gradle. After that, you should be able to us TensorflowInferenceInterface freely.
 
 ```
@@ -91,7 +91,13 @@ compile 'org.tensorflow:tensorflow-android:+'
 2. Copy <a href="https://github.com/kerrj/yoloexampleapp/blob/master/app/CMakeLists.txt">CMakeLists.txt</a> into your /app directory.
 3. Copy the entire <a href="https://github.com/kerrj/yoloexampleapp/blob/master/app/src/main/cpp">cpp directory</a> into your src/main directory.
 
-The last two steps are necessary to use ImageUtils, which is part of converting the camera frame to a Bitmap. They are native functions (written in C++) because they run much faster than Java, so expensive operations like image processing are much more efficient.
+The last two steps are necessary for converting image formats. They are native functions (written in C++) because they run much faster than Java, so expensive operations like image processing are much more efficient (20ms in native compared to 100+ in java).
+
+## App structure
+* The class which carries out detection is **TensorflowYoloDetector**. Simply call the recognizeImage() method in this class to retrieve a list of bounding boxes for a given input bitmap (must be 416x416 pixels).
+* **MainActivity** is the class which initializes all relevant objects and processes frames from the camera. 
+* **CameraInitializer** is responsible for setting up a camera stream and delivering frames
+* **BitmapUtils** and **ImageUtils** are static classes which handle, among others, YUV->RGB conversion, bitmap resizing, and bitmap cropping.
 
 # How can I train YOLO on custom objects?
 This section leads you through training YOLO to detect a new object. It contains:
