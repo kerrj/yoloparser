@@ -1,7 +1,7 @@
 # Boxes Around Robots
 Ever wonder if using neural nets for object detection in FTC is possible? This page leads you through how!
 
-If you'd like to see immediate results download the app on the Google Play store titled "**FTC Neural Net Demo**".
+If you'd like to see immediate results download the app on the Google Play store titled <a href="https://play.google.com/store/apps/details?id=com.justin.ftcnndemo">"FTC Neural Net Demo"</a>.
 
 If you'd like to spend some time learning about neural nets and how you can use them in FTC, read on!
 
@@ -42,7 +42,7 @@ It's likely Relic Recovery will include some sort of find-and-retrieve action in
 </p>
 
 ### Cons
-* Currently, processing each frame takes about 700ms, which is pretty slow for vision processing. That said, Google has announced Tensorflow Lite coming in the next few months, which will tremendously increase the speed of processing by supporting phones' GPUs.
+* Currently, processing each frame takes about 700ms, which is pretty slow for vision processing. That said, Google has *announced Tensorflow Lite coming in the next few months*, which will tremendously increase the speed of processing by supporting phones' GPUs.
 * Requires large amounts of data to train detection of new objects (code for the website is intended to help teams with this).
 
 
@@ -69,7 +69,7 @@ Neural nets have been around since the later 1900's, but have only very recently
 Tensorflow is a recently launched, quickly growing, open-source framework for neural nets developed by Google. You probably use Tensorflow on a daily basis, since it is the framework Google uses in their search engine for intelligent results and much more. It is what we will use to train and execute our neural net, both on desktops and on mobile devices.
 
 # Using a pretrained YOLO model in your Android app
-If you just want to see something work, download the full example app on the Google Play Store titled "**FTC Neural Net Demo**". All the source code is located <a href="http://github.com/kerrj/yoloexampleapp">here.</a>
+If you just want to see something work, download the full example app on the Google Play Store titled <a href="https://play.google.com/store/apps/details?id=com.justin.ftcnndemo">"FTC Neural Net Demo"</a>. All the source code is located <a href="http://github.com/kerrj/yoloexampleapp">here.</a>
 
 **NOTE**:*This section and the example app currently use TensorflowInferenceInterface for exectuting the neural net. When Tensorflow Lite is released that will become obsolete, and this section will be updated.*
 
