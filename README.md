@@ -1,7 +1,7 @@
 # Boxes Around Robots
 Ever wonder if using neural nets for image processing in FTC is possible? This page leads you through how!
 
-If you'd like to see immediate results, follow instructions in the "Using a pretrained model" section.
+If you'd like to see immediate results download the app on the Google Play store titled "**FTC Neural Net Demo**".
 
 If you'd like to spend some time learning about neural nets and how you can use them in FTC, read on!
 
@@ -67,12 +67,13 @@ Neural nets have been around since the later 1900's, but have only very recently
 ## Tensorflow
 Tensorflow is a recently launched, quickly growing, open-source framework for neural nets developed by Google. You probably use Tensorflow on a daily basis, since it is the framework Google uses in their search engine for intelligent results and much more. It is what we will use to train and execute our neural net, both on desktops and on mobile devices.
 
-# Using a pretrained neural net in your Android app
+# Using a pretrained YOLO model in your Android app
+If you just want to see something work, download the full example app on the Google Play Store titled "**FTC Neural Net Demo**". All the source code is located <a href="http://github.com/kerrj/yoloexampleapp">here.</a>
+
 **NOTE**:*This section and the example app currently use TensorflowInferenceInterface for exectuting the neural net. When Tensorflow Lite is released that will become obsolete, and this section will be updated.*
 
-Using a pretrained YOLO network in your application is actually quite straightforward: see <a href="http://github.com/kerrj/yoloexampleapp">my full example app here.</a> The class which carries out detection is TensorflowYoloDetector which implements the general Classifier interface. Simply call the recognizeImage() method in this class to retrieve a list of bounding boxes for that image. CameraInitializer is responsible for setting up a camera stream, and MainActivity is the class which initializes all relevant objects and processes frames from the camera. BitmapUtils and ImageUtils are static classes which handle, among others, YUV->RGB conversion, bitmap resizing, and bitmap cropping.
+Using a pretrained YOLO network in your application is actually quite straightforward. The example app is ready-to-go and should compile onto a phone provided you have all SDK and NDK tools installed. However, **to use the framework in your own app, you need to do 3 things**:
 
-The example app is ready-to-go and should compile onto a phone provided you have all SDK and NDK tools installed. However, to use the framework in your own app, you need to do 3 things:
 1. Copy the following lines into your build.gradle. After that, you should be able to us TensorflowInferenceInterface freely.
 
 ```
@@ -91,7 +92,13 @@ compile 'org.tensorflow:tensorflow-android:+'
 2. Copy <a href="https://github.com/kerrj/yoloexampleapp/blob/master/app/CMakeLists.txt">CMakeLists.txt</a> into your /app directory.
 3. Copy the entire <a href="https://github.com/kerrj/yoloexampleapp/blob/master/app/src/main/cpp">cpp directory</a> into your src/main directory.
 
-The last two steps are necessary to use ImageUtils, which is part of converting the camera frame to a Bitmap. They are native functions (written in C++) because they run much faster than Java, so expensive operations like image processing are much more efficient.
+The last two steps are necessary for converting image formats. They are native functions (written in C++) because they run much faster than Java, so expensive operations like image processing are much more efficient (20ms in native compared to 100+ in java).
+
+## App structure
+* The class which carries out detection is **TensorflowYoloDetector**. Simply call the recognizeImage() method in this class to retrieve a list of bounding boxes for a given input bitmap (must be 416x416 pixels).
+* **MainActivity** is the class which initializes all relevant objects and processes frames from the camera. 
+* **CameraInitializer** is responsible for setting up a camera stream and delivering frames
+* **BitmapUtils** and **ImageUtils** are static classes which handle, among others, YUV->RGB conversion, bitmap resizing, and bitmap cropping.
 
 # How can I train YOLO on custom objects?
 This section leads you through training YOLO to detect a new object. It contains:
